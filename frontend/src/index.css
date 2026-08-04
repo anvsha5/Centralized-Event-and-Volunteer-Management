@@ -1,0 +1,12 @@
+@import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700&f[]=general-sans@400,500,600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-base-ink font-body text-glass-white antialiased;
+    background-image: radial-gradient(circle at top, rgba(59, 46, 107, 0.55), transparent 55%);
+  }
+}
