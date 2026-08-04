@@ -3,12 +3,9 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const dns = require('dns')
+const dns = require('dns');
 
-dns.setServers([
-  '8.8.8.8',
-  '8.8.1.1'
-])
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,7 +19,13 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
 
-console.log(process.env.MONGO_URI);
+// Auth routes (unprotected)
+const authRoutes = require('./routes/auth');
+const { auth } = require('./middleware/auth');
+const authController = require('./controllers/authController');
+
+app.use('/api/auth', authRoutes);
+app.get('/api/me', auth, authController.getMe);
 
 mongoose
   .connect(process.env.MONGO_URI)
