@@ -1,11 +1,16 @@
+const mongoose = require('mongoose');
 const User = require('../models/User');
 
 async function verifySessionToken(token) {
-  if (!token) return null;
+  if (!token || typeof token !== 'string') return null;
+  if (!mongoose.Types.ObjectId.isValid(token)) return null;
 
-  // Phase 1 will replace this with full OTP session token verification.
-  const user = await User.findById(token).select('_id email name role');
-  return user || null;
+  try {
+    const user = await User.findById(token).select('_id email name role');
+    return user || null;
+  } catch (err) {
+    return null;
+  }
 }
 
 async function auth(req, res, next) {
@@ -22,7 +27,7 @@ async function auth(req, res, next) {
   }
 
   req.user = {
-    id: user._id,
+    id: user._id.toString(),
     email: user.email,
     name: user.name,
     role: user.role,
