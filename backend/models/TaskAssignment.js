@@ -5,7 +5,7 @@ const taskAssignmentSchema = new mongoose.Schema({
   volunteerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
   status: {
     type: String,
-    enum: ['assigned', 'completed', 'no_show', 'cancelled'],
+    enum: ['assigned', 'in_progress', 'completed', 'no_show', 'cancelled'],
     default: 'assigned',
   },
   createdAt: { type: Date, default: Date.now },
