@@ -6,6 +6,9 @@ import Events from './routes/organizer/Events';
 import EventForm from './routes/organizer/EventForm';
 import VolunteerPlaceholder from './routes/volunteer/VolunteerPlaceholder';
 import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
+import EventPage from './routes/attendee/EventPage';
+import RegisterForm from './routes/attendee/RegisterForm';
+import MyTicket from './routes/attendee/MyTicket';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
@@ -72,6 +75,11 @@ function App() {
           <AppNavbar />
 
           <Routes>
+            {/* Public Event & Registration Routes */}
+            <Route path="/events/:id/public" element={<EventPage />} />
+            <Route path="/events/:id/register" element={<RegisterForm />} />
+            <Route path="/attendee/ticket/:id" element={<MyTicket />} />
+
             <Route path="/login" element={<Login />} />
             <Route
               path="/organizer"

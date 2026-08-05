@@ -277,10 +277,14 @@ stored in the database; editing works too.
 
 ---
 
-## Phase 3 — Registration + QR
+## ✅ Phase 3 — Registration + QR
 
-### Block 3.A — Registration backend
-**Depends on:** Block 2.A merged
+### 🟩 Block 3.A — Registration Backend
+- [x] Task 3.A.1 — QR Service (`qrService.js`)
+- [x] Task 3.A.2 — Registration Endpoint with MongoDB Transaction
+- [x] Task 3.A.3 — Waitlist Auto-Promotion
+- [x] All backend verification completed
+- [x] Backend block completed
 
 **Task 3.A.1 — QR service**
 Files: `/backend/services/qrService.js`
@@ -313,8 +317,12 @@ Verify: cancelling a registered attendee correctly promotes the oldest waitliste
 
 **Commit & merge Block 3.A.**
 
-### Block 3.B — Registration frontend
-**Depends on:** Block 3.A merged
+### 🟩 Block 3.B — Registration Frontend
+- [x] Task 3.B.1 — Public Event Page
+- [x] Task 3.B.2 — Registration Form + QR Reveal
+- [x] Task 3.B.3 — My Ticket Page
+- [x] All frontend verification completed
+- [x] Frontend block completed
 
 **Task 3.B.1 — Public event page**
 Files: `/frontend/src/routes/attendee/EventPage.jsx`
@@ -342,6 +350,17 @@ reachable from the attendee's dashboard nav. Only this screen.
 Verify: navigating to My Ticket after registering shows the same QR.
 
 **Commit & merge Block 3.B.**
+
+### ✅ Phase 3 Milestones
+- [x] QR generation implemented
+- [x] Registration endpoint with atomic capacity handling implemented
+- [x] Waitlist auto-promotion working
+- [x] Public event page completed
+- [x] Registration flow completed
+- [x] QR displayed immediately after successful registration
+- [x] My Ticket page completed
+- [x] Phase 3 marked as COMPLETE
+
 
 ---
 
