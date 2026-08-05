@@ -4,7 +4,9 @@ import Login from './routes/auth/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Events from './routes/organizer/Events';
 import EventForm from './routes/organizer/EventForm';
-import VolunteerPlaceholder from './routes/volunteer/VolunteerPlaceholder';
+import Volunteers from './routes/organizer/Volunteers';
+import Onboarding from './routes/volunteer/Onboarding';
+import MyTasks from './routes/volunteer/MyTasks';
 import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
@@ -23,14 +25,24 @@ function AppNavbar() {
         ) : (
           <>
             {role === 'organizer' && (
-              <Link to="/organizer" className="text-teal-live hover:underline">
-                Events
-              </Link>
+              <>
+                <Link to="/organizer" className="text-teal-live hover:underline">
+                  Events
+                </Link>
+                <Link to="/organizer/volunteers" className="text-teal-live hover:underline">
+                  Volunteers & Tasks
+                </Link>
+              </>
             )}
             {role === 'volunteer' && (
-              <Link to="/volunteer" className="text-teal-live hover:underline">
-                Volunteer Portal
-              </Link>
+              <>
+                <Link to="/volunteer/tasks" className="text-teal-live hover:underline">
+                  My Tasks
+                </Link>
+                <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
+                  Onboarding & Profile
+                </Link>
+              </>
             )}
             {role === 'attendee' && (
               <Link to="/attendee" className="text-teal-live hover:underline">
@@ -63,7 +75,7 @@ function RootRedirect() {
   if (loading) return null;
   if (!token) return <Navigate to="/login" replace />;
   if (role === 'organizer') return <Navigate to="/organizer" replace />;
-  if (role === 'volunteer') return <Navigate to="/volunteer" replace />;
+  if (role === 'volunteer') return <Navigate to="/volunteer/tasks" replace />;
   return <Navigate to="/attendee" replace />;
 }
 
@@ -106,10 +118,34 @@ function App() {
               }
             />
             <Route
+              path="/organizer/volunteers"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Volunteers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
-                  <VolunteerPlaceholder />
+                  <Navigate to="/volunteer/tasks" replace />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/tasks"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <MyTasks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/onboarding"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <Onboarding />
                 </ProtectedRoute>
               }
             />
