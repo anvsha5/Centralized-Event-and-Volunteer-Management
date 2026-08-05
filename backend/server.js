@@ -27,6 +27,9 @@ const authController = require('./controllers/authController');
 app.use('/api/auth', authRoutes);
 app.get('/api/me', auth, authController.getMe);
 
+const eventRoutes = require('./routes/events');
+app.use('/api/events', eventRoutes);
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
