@@ -2,7 +2,8 @@ import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './routes/auth/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import OrganizerPlaceholder from './routes/organizer/OrganizerPlaceholder';
+import Events from './routes/organizer/Events';
+import EventForm from './routes/organizer/EventForm';
 import VolunteerPlaceholder from './routes/volunteer/VolunteerPlaceholder';
 import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
 
@@ -20,7 +21,7 @@ function AppNavbar() {
           <>
             {role === 'organizer' && (
               <Link to="/organizer" className="text-teal-live hover:underline">
-                Organizer Dashboard
+                Events
               </Link>
             )}
             {role === 'volunteer' && (
@@ -76,7 +77,23 @@ function App() {
               path="/organizer"
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
-                  <OrganizerPlaceholder />
+                  <Events />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/events/new"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <EventForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/events/:id/edit"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <EventForm />
                 </ProtectedRoute>
               }
             />
