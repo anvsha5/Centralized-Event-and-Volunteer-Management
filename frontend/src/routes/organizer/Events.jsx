@@ -109,9 +109,16 @@ function Events() {
                   {event.resources?.length || 0} resources
                 </p>
               </div>
-              <Link to={`/organizer/events/${event._id}/edit`}>
-                <ClayButton className="whitespace-nowrap">Edit</ClayButton>
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link to={`/organizer/events/${event._id}/resources`}>
+                  <ClayButton className="whitespace-nowrap bg-teal-live/20 text-teal-live hover:bg-teal-live/30">
+                    Resources ({event.resources?.length || 0})
+                  </ClayButton>
+                </Link>
+                <Link to={`/organizer/events/${event._id}/edit`}>
+                  <ClayButton className="whitespace-nowrap">Edit</ClayButton>
+                </Link>
+              </div>
             </GlassPanel>
           ))}
         </div>

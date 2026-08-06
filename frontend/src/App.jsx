@@ -4,6 +4,7 @@ import Login from './routes/auth/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Events from './routes/organizer/Events';
 import EventForm from './routes/organizer/EventForm';
+import ResourceInventory from './routes/organizer/ResourceInventory';
 import VolunteerPlaceholder from './routes/volunteer/VolunteerPlaceholder';
 import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
 import EventPage from './routes/attendee/EventPage';
@@ -102,6 +103,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <EventForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/events/:id/resources"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <ResourceInventory />
                 </ProtectedRoute>
               }
             />
