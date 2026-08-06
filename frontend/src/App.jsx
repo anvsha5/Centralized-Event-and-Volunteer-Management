@@ -10,6 +10,8 @@ import MyTasks from './routes/volunteer/MyTasks';
 import Scanner from './routes/volunteer/Scanner';
 import MyTrustCard from './routes/volunteer/MyTrustCard';
 import Live from './routes/organizer/Live';
+import Issues from './routes/organizer/Issues';
+import ReportIssue from './routes/volunteer/ReportIssue';
 import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
@@ -43,12 +45,18 @@ function AppNavbar() {
                 <Link to="/organizer/live" className="text-teal-live hover:underline">
                   Live Dashboard
                 </Link>
+                <Link to="/organizer/issues" className="text-teal-live hover:underline">
+                  Issue Triage
+                </Link>
               </>
             )}
             {role === 'volunteer' && (
               <>
                 <Link to="/volunteer/tasks" className="text-teal-live hover:underline">
                   My Tasks
+                </Link>
+                <Link to="/volunteer/report-issue" className="text-teal-live hover:underline">
+                  Report Issue
                 </Link>
                 <Link to="/volunteer/scanner" className="text-teal-live hover:underline">
                   Scanner
@@ -160,6 +168,14 @@ function App() {
               }
             />
             <Route
+              path="/organizer/issues"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Issues />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
@@ -172,6 +188,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
                   <MyTasks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/report-issue"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <ReportIssue />
                 </ProtectedRoute>
               }
             />
