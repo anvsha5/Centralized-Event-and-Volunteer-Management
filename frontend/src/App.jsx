@@ -8,6 +8,7 @@ import Volunteers from './routes/organizer/Volunteers';
 import Onboarding from './routes/volunteer/Onboarding';
 import MyTasks from './routes/volunteer/MyTasks';
 import Scanner from './routes/volunteer/Scanner';
+import MyTrustCard from './routes/volunteer/MyTrustCard';
 import Live from './routes/organizer/Live';
 import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
@@ -54,6 +55,9 @@ function AppNavbar() {
                 </Link>
                 <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
                   Onboarding & Profile
+                </Link>
+                <Link to="/volunteer/trust-card" className="text-teal-live hover:underline">
+                  My Trust Card
                 </Link>
               </>
             )}
@@ -184,6 +188,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
                   <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/trust-card"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <MyTrustCard />
                 </ProtectedRoute>
               }
             />

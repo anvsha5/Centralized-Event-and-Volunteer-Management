@@ -44,3 +44,15 @@ export async function getMyTasks(token) {
   }
   return data;
 }
+
+export async function getVolunteerTrustCard(token, volunteerId) {
+  const res = await fetch(`${API_BASE}/volunteers/${encodeURIComponent(volunteerId)}/trust-card`, {
+    headers: authHeaders(token),
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to fetch trust card');
+  }
+  return data;
+}
