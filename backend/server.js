@@ -45,6 +45,9 @@ app.use('/api', checkinRoutes);
 const issueRoutes = require('./routes/issues');
 app.use('/api', issueRoutes);
 
+const feedbackRoutes = require('./routes/feedback');
+app.use('/api', feedbackRoutes);
+
 const notificationRoutes = require('./routes/notifications');
 app.use('/api', notificationRoutes);
 
