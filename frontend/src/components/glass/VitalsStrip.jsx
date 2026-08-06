@@ -34,30 +34,24 @@ function VitalsStrip({ capacity = 0, occupancyPercent = 0, activeVolunteers = 0,
 
   return (
     <div
-      className={`flex flex-wrap items-center justify-between gap-4 rounded-glass border border-white/15 bg-slate-900/60 p-4 font-mono shadow-glass backdrop-blur-glass ${className}`}
+      className={`grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:items-center sm:justify-between rounded-glass border border-white/15 bg-slate-900/60 p-4 font-mono shadow-glass backdrop-blur-glass ${className}`}
     >
-      <div className="flex items-center gap-6">
-        <div>
-          <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Capacity</span>
-          <span className="text-base font-bold text-white">{capacity}</span>
-        </div>
-
-        <div className="h-8 w-px bg-white/10" />
-
-        <div>
-          <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Occupancy</span>
-          <span className="text-base font-bold text-teal-live">{occupancyPercent}%</span>
-        </div>
-
-        <div className="h-8 w-px bg-white/10" />
-
-        <div>
-          <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Active Volunteers</span>
-          <span className="text-base font-bold text-white">{activeVolunteers}</span>
-        </div>
+      <div>
+        <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Capacity</span>
+        <span className="text-base font-bold text-white">{capacity}</span>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div>
+        <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Occupancy</span>
+        <span className="text-base font-bold text-teal-live">{occupancyPercent}%</span>
+      </div>
+
+      <div>
+        <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Active Volunteers</span>
+        <span className="text-base font-bold text-white">{activeVolunteers}</span>
+      </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
         <span className="text-xs text-slate-300 font-body">Status:</span>
         {getStatusBadge(eventStatus)}
       </div>

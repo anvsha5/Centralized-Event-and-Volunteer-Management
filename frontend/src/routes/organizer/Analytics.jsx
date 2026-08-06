@@ -303,7 +303,7 @@ function Analytics() {
             <FunnelChart funnel={funnel} />
 
             {/* Section 2: New metrics row — 4 compact stat cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               <MetricCard
                 label="Peak Entry Time"
                 value={extended?.peakEntryTime || (noCheckins ? 'N/A' : '—')}

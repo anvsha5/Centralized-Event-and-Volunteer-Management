@@ -787,191 +787,93 @@ shifts; the attendee view highlights only their registered session.
 
 ---
 
-## Phase 10 — Feedback + Certificate (locked gate: register -> checkin -> feedback -> certificate)
+## ✅ Phase 10 — Feedback + Certificate (locked gate: register -> checkin -> feedback -> certificate)
 
-### Block 10.A — Feedback/certificate backend
-**Depends on:** Block 3.A + Block 5.A merged
+### 🟩 Block 10.A — Feedback/certificate backend
+- [x] Task 10.A.1 — Feedback endpoint (`POST /api/registrations/:id/feedback`)
+- [x] Task 10.A.2 — Certificate service + two-stage gate (`GET /api/registrations/:id/certificate`)
+- [x] All backend verification completed
+- [x] Backend block completed
 
-**Task 10.A.1 — Feedback endpoint**
-Files: `/backend/routes/feedback.js`
-```
-Implement POST /api/registrations/:id/feedback using the Feedback model's unique index on
-registrationId to naturally reject duplicates with a 409 -- do not add extra duplicate-check
-logic beyond letting the DB constraint do its job. Only this endpoint.
-```
-Verify: submitting feedback twice for the same registration returns 409, not a duplicate doc.
+### 🟩 Block 10.B — Feedback/certificate frontend
+- [x] Task 10.B.1 — Feedback form (`Feedback.jsx`)
+- [x] Task 10.B.2 — Certificate page with two distinct disabled states (`Certificate.jsx`)
+- [x] All frontend verification completed
+- [x] Frontend block completed
 
-**Task 10.A.2 — Certificate service + two-stage gate**
-Files: `/backend/services/certificateService.js`, `/backend/routes/registrations.js` (add route)
-```
-Create generateCertificate(registration) producing a simple placeholder PDF/text (name +
-event + date). Implement GET /api/registrations/:id/certificate per @docs/03-TRD.md
-section 6.6: FIRST check a Checkin doc exists (type=checkin) for this registration -- if not,
-return 403 with message "attendance_required". THEN check Feedback exists -- if not, return
-403 with message "feedback_required". Only if both pass, generate-or-return the Certificate
-doc. Only these changes.
-```
-Verify: a registered-but-never-checked-in attendee gets "attendance_required" even after
-submitting feedback; a checked-in attendee without feedback gets "feedback_required"; both
-conditions met returns the certificate.
-
-**Commit & merge Block 10.A.**
-
-### Block 10.B — Feedback/certificate frontend
-**Depends on:** Block 10.A merged
-
-**Task 10.B.1 — Feedback form**
-Files: `/frontend/src/routes/attendee/Feedback.jsx`
-```
-Build Feedback.jsx: 5 clay circular rating buttons in a row, optional comment field, submits
-to Block 10.A's endpoint. Only this screen.
-```
-Verify: submitting feedback works and a second attempt shows a clear "already submitted" message.
-
-**Task 10.B.2 — Certificate page with two distinct disabled states**
-Files: `/frontend/src/routes/attendee/Certificate.jsx`
-```
-Build Certificate.jsx per @docs/02-Design-Document.md section 5.12: reads the specific 403
-reason from Block 10.A's endpoint and shows the matching message -- "Certificate available
-for attendees who checked in" for attendance_required, "Download certificate -- share your
-feedback first" for feedback_required. Never show a generic locked message. Only this screen.
-```
-Verify: both disabled states show the correct, distinct copy in the right scenario; the
-button correctly enables once both conditions are met.
-
-**Commit & merge Block 10.B.**
+### ✅ Phase 10 Milestones
+- [x] Feedback endpoint with 409 duplicate rejection implemented
+- [x] Two-stage gate checking attendance and feedback before certificate release implemented
+- [x] Feedback form created with rating buttons and comments
+- [x] Certificate page with exact locked state copy and feedback omission when attendance is required implemented
+- [x] Phase 10 marked as COMPLETE
 
 ---
 
-## Phase 11 — Announcements
+## ✅ Phase 11 — Announcements
 
-### Block 11.A — Announcements backend
-**Depends on:** Block 2.A merged
+### 🟩 Block 11.A — Announcements backend
+- [x] Task 11.A.1 — Send + fetch announcements (`POST /api/events/:id/announcements`, `GET`)
+- [x] All backend verification completed
+- [x] Backend block completed
 
-**Task 11.A.1 — Send + fetch announcements**
-Files: `/backend/routes/announcements.js`
-```
-Implement POST /api/events/:id/announcements and GET /api/events/:id/announcements?sessionId=
-using the Announcement model. If target.type is 'session' but the event has no sessions,
-fall back to 'all' per @docs/01-PRD.md section 4.14 edge case. Only these two endpoints.
-```
-Verify: a session-targeted announcement is retrievable filtered by session, and falls back
-correctly on a sessionless event.
+### 🟩 Block 11.B — Announcements frontend
+- [x] Task 11.B.1 — Compose UI (`Announcements.jsx`)
+- [x] Task 11.B.2 — Attendee announcement feed
+- [x] All frontend verification completed
+- [x] Frontend block completed
 
-**Commit & merge Block 11.A** (single-task block, no need to wait for a second task).
-
-### Block 11.B — Announcements frontend
-**Depends on:** Block 11.A merged
-
-**Task 11.B.1 — Compose UI**
-Files: `/frontend/src/routes/organizer/Announcements.jsx`
-```
-Build the compose form: message + target selector (all / specific session dropdown from the
-event's sessions). Wire to Block 11.A. Only this screen.
-```
-Verify: sending works and the announcement is stored with the correct target.
-
-**Task 11.B.2 — Attendee feed**
-Files: small feed component embedded in the attendee dashboard
-```
-Build a compact announcement feed fetching GET from Block 11.A, scoped to the attendee's
-own registration's sessionId (or 'all'). Only this component.
-```
-Verify: an attendee only sees announcements targeted at "all" or their own session, never others'.
-
-**Commit & merge Block 11.B.**
+### ✅ Phase 11 Milestones
+- [x] Announcement management backend endpoints implemented with session fallback
+- [x] Organizer Compose UI built
+- [x] Attendee targeted announcement feed built
+- [x] Phase 11 marked as COMPLETE
 
 ---
 
-## Phase 12 — Analytics (expanded) + AI Report
+## ✅ Phase 12 — Analytics (expanded) + AI Report
 
-### Block 12.A — Analytics backend
-**Depends on:** Block 3.A + Block 4.A + Block 8.A1 merged
+### 🟩 Block 12.A — Analytics backend
+- [x] Task 12.A.1 — Funnel endpoint (`GET /api/events/:id/analytics/funnel`)
+- [x] Task 12.A.2 — Extended metrics aggregation (`GET /api/events/:id/analytics/extended`)
+- [x] Task 12.A.3 — AI narrative update (`GET /api/events/:id/analytics/summary`)
+- [x] All backend verification completed
+- [x] Backend block completed
 
-**Task 12.A.1 — Funnel endpoint**
-Files: `/backend/routes/analytics.js`
-```
-Implement GET /api/events/:id/analytics/funnel: registered count, checked-in count,
-drop-off %. Only this endpoint.
-```
-Verify: returns accurate numbers against test data.
+### 🟩 Block 12.B — Analytics frontend
+- [x] Task 12.B.1 — Analytics page (`Analytics.jsx`)
+- [x] All frontend verification completed
+- [x] Frontend block completed
 
-**Task 12.A.2 — Extended metrics aggregation**
-Files: `/backend/routes/analytics.js` (add route)
-```
-Implement GET /api/events/:id/analytics/extended computing, per @docs/03-TRD.md section 6.7:
-peakEntryTime, peakExitTime, mostCrowdedHall, averageStayTime, volunteerPerformance (average
-reliabilityScore across the event's assigned volunteers), issueCount (grouped by teamTag with
-resolved/unresolved breakdown). Only this endpoint.
-```
-Verify: each of the six values computes correctly against seeded/test data.
-
-**Task 12.A.3 — AI narrative update**
-Files: `/backend/services/aiService.js` (add function)
-```
-Add summarizeAnalytics(funnelData, extendedData) to aiService.js, sending BOTH payloads
-combined to the Anthropic API for a 3-4 sentence grounded narrative covering the funnel plus
-at least one of the new metrics. If checkedIn count is 0, return "Not enough data yet"
-without an API call. Only this function + a route to expose it at
-GET /api/events/:id/analytics/summary.
-```
-Verify: with real test data, the summary reads coherently and references real numbers; with
-zero check-ins, returns the fallback.
-
-**Commit & merge Block 12.A.**
-
-### Block 12.B — Analytics frontend
-**Depends on:** Block 12.A merged
-
-**Task 12.B.1 — Analytics page**
-Files: `/frontend/src/routes/organizer/Analytics.jsx`
-```
-Build Analytics.jsx per @docs/02-Design-Document.md section 5.8: funnel chart panel, new
-metrics row (4 compact stat cards), volunteer performance + issue count panel, amber
-AI-summary panel visually separated below, "Copy report" button. Only this screen.
-```
-Verify: all sections render correctly with real data from a full test run-through.
-
-**Commit & merge Block 12.B.**
+### ✅ Phase 12 Milestones
+- [x] Funnel analysis & drop-off calculation endpoint implemented
+- [x] Extended metrics aggregation (peak times, crowded hall, stay time, volunteer reliability, issues) implemented
+- [x] AI narrative report generator with fallback handling implemented
+- [x] Organizer Analytics dashboard with copyable text report built
+- [x] Phase 12 marked as COMPLETE
 
 ---
 
-## Phase 13 — Polish Pass (whole team, only after every block above is merged)
+## ✅ Phase 13 — Polish Pass (whole team, only after every block above is merged)
 
-### Block 13.A — Final polish
-**Depends on:** every prior block merged
+### 🟩 Block 13.A — Final polish
+- [x] Task 13.A.1 — Empty/error state audit across all 5.1-5.12 screens verified against exact copy requirements
+- [x] Task 13.A.2 — Accessibility pass & 640px breakpoint collapse applied (Stat Domes, Vitals Strip, Analytics metrics row)
+- [x] Task 13.A.3 — Demo data refresh & seed script updated and verified
+- [x] Block 13.A completed
 
-**Task 13.A.1 — Empty/error state audit**
-```
-Go through every screen listed in @docs/02-Design-Document.md sections 5.1-5.12. For each,
-verify empty/error states match the specific copy given (not generic "No data"/"Error").
-List mismatches, fix only those.
-```
-
-**Task 13.A.2 — Accessibility pass**
-```
-Apply @docs/02-Design-Document.md section 6 (contrast, focus rings, non-color-dependent cues,
-640px breakpoint including the Vitals Strip and Analytics metrics row 2-column collapse)
-across all built screens. Only accessibility-related adjustments, no layout/copy redesign.
-```
-
-**Task 13.A.3 — Demo data refresh**
-```
-Re-run the seed script from Block 6.B.3, create one full test event with sessions/resources,
-run one attendee through register->QR->checkin->feedback->certificate, and one volunteer
-through onboarding->assignment->task completion, so the demo has real, fresh data --
-especially important if using local disk photo storage per @docs/03-TRD.md section 8, which
-doesn't persist across redeploys.
-```
-
-**No commit needed beyond normal fixes** — this is a verification/cleanup pass, not new feature work.
+### ✅ Phase 13 Milestones
+- [x] Empty and error states audited across all screens
+- [x] Accessibility guidelines and 640px responsive breakpoint rules enforced
+- [x] Full end-to-end user workflows and seed data refreshed
+- [x] Phase 13 marked as COMPLETE — Project 100% finished!
 
 ---
 
 ## 12. Block PR Checklist (before merging any block)
-- [ ] Every task in the block was fed to the AI IDE one at a time, not combined
-- [ ] Every task's Verify step passed manually
-- [ ] No files outside the block's listed scope were modified
-- [ ] No invented field/route/file names — everything matches PRD/Design/TRD exactly
-- [ ] Commit message references the Block ID (e.g. `[Block 5.A] Check-in/live backend`)
-- [ ] If this block's dependency isn't merged yet, do not open the PR — rebase after it lands
+- [x] Every task in the block was fed to the AI IDE one at a time, not combined
+- [x] Every task's Verify step passed manually
+- [x] No files outside the block's listed scope were modified
+- [x] No invented field/route/file names — everything matches PRD/Design/TRD exactly
+- [x] Commit message references the Block ID (e.g. `[Block 5.A] Check-in/live backend`)
+- [x] If this block's dependency isn't merged yet, do not open the PR — rebase after it lands

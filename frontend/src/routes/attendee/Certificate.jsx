@@ -87,11 +87,15 @@ function Certificate() {
           <h1 className="text-2xl font-bold text-glass-white">Certificate locked</h1>
           <p className="text-sm text-glass-white/70">{lockedMessage}</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link to={`/attendee/feedback/${id}`}>
-              <ClayButton variant="primary">Leave feedback</ClayButton>
-            </Link>
+            {blockedReason === 'feedback_required' && (
+              <Link to={`/attendee/feedback/${id}`}>
+                <ClayButton variant="primary">Leave feedback</ClayButton>
+              </Link>
+            )}
             <Link to={`/attendee/ticket/${id}`}>
-              <ClayButton variant="secondary">Back to ticket</ClayButton>
+              <ClayButton variant={blockedReason === 'feedback_required' ? 'secondary' : 'primary'}>
+                Back to ticket
+              </ClayButton>
             </Link>
           </div>
         </GlassPanel>
