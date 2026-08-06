@@ -1,6 +1,7 @@
 const Task = require('../models/Task');
 const TaskAssignment = require('../models/TaskAssignment');
 const VolunteerProfile = require('../models/VolunteerProfile');
+const { recalculateScore } = require('../services/reliabilityService');
 
 // POST /api/tasks
 exports.createTask = async (req, res) => {
@@ -207,6 +208,8 @@ exports.updateAssignmentStatus = async (req, res) => {
     if (!assignment) {
       return res.status(404).json({ error: 'Task assignment not found' });
     }
+
+    await recalculateScore(assignment.volunteerId?._id || assignment.volunteerId);
 
     return res.status(200).json(assignment);
   } catch (error) {

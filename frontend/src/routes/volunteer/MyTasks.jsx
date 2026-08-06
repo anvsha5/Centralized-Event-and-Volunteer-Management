@@ -76,6 +76,12 @@ function MyTasks() {
         </div>
 
         <div className="flex items-center gap-3">
+          <Link to="/volunteer/trust-card">
+            <ClayButton className="bg-amber-ai text-base-ink text-xs font-semibold">
+              AI Trust Card
+            </ClayButton>
+          </Link>
+
           <Link to="/volunteer/onboarding">
             <ClayButton className="bg-glass-white/20 text-glass-white text-xs">
               ⚙️ My Profile & Skills

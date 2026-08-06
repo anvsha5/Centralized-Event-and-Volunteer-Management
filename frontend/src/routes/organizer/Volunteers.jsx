@@ -11,6 +11,7 @@ import {
   assignTask,
   updateTaskStatus,
 } from '../../api/tasks';
+import TrustCard from './TrustCard';
 
 const PRESET_SKILLS = [
   'Technical Support',
@@ -47,6 +48,7 @@ function Volunteers() {
   const [suggestedVolunteers, setSuggestedVolunteers] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [assigningVolunteerId, setAssigningVolunteerId] = useState(null);
+  const [activeTrustCardVolunteer, setActiveTrustCardVolunteer] = useState(null);
 
   // 1. Fetch events on load
   useEffect(() => {
@@ -314,7 +316,18 @@ function Volunteers() {
                   <div key={task._id} className="rounded-clay bg-clay-base p-4 text-base-ink shadow-clay">
                     <h3 className="font-display font-bold text-sm">{task.title}</h3>
                     <div className="mt-1 text-xs font-medium text-teal-700">
-                      👤 {activeAssignment?.volunteerId?.name || 'Assigned Volunteer'}
+                      👤
+                      <button
+                        type="button"
+                        className="ml-1 underline decoration-dotted underline-offset-2"
+                        onClick={() => {
+                          if (activeAssignment?.volunteerId?._id) {
+                            setActiveTrustCardVolunteer(activeAssignment.volunteerId);
+                          }
+                        }}
+                      >
+                        {activeAssignment?.volunteerId?.name || 'Assigned Volunteer'}
+                      </button>
                     </div>
 
                     <div className="mt-2 text-[11px] text-base-ink/70">
@@ -367,7 +380,18 @@ function Volunteers() {
                   <div key={task._id} className="rounded-clay bg-clay-base/80 p-4 text-base-ink opacity-90 shadow-clay">
                     <h3 className="font-display font-bold text-sm line-through">{task.title}</h3>
                     <div className="mt-1 text-xs text-base-ink/70">
-                      👤 {finalAssignment?.volunteerId?.name || 'Volunteer'}
+                      👤
+                      <button
+                        type="button"
+                        className="ml-1 underline decoration-dotted underline-offset-2"
+                        onClick={() => {
+                          if (finalAssignment?.volunteerId?._id) {
+                            setActiveTrustCardVolunteer(finalAssignment.volunteerId);
+                          }
+                        }}
+                      >
+                        {finalAssignment?.volunteerId?.name || 'Volunteer'}
+                      </button>
                     </div>
                     <div className="mt-2 inline-block rounded bg-teal-live/30 px-2 py-0.5 text-[10px] font-semibold text-base-ink">
                       Status: {finalAssignment?.status || 'Completed'}
@@ -579,6 +603,15 @@ function Volunteers() {
             </div>
           </GlassPanel>
         </div>
+      )}
+
+      {activeTrustCardVolunteer && (
+        <TrustCard
+          token={token}
+          volunteerId={activeTrustCardVolunteer._id}
+          volunteerName={activeTrustCardVolunteer.name || activeTrustCardVolunteer.email}
+          onClose={() => setActiveTrustCardVolunteer(null)}
+        />
       )}
     </div>
   );
