@@ -440,9 +440,15 @@ Verify: a volunteer sees their assigned tasks correctly.
 
 ---
 
-## Phase 5 — Check-in + Live Dashboard
+## ✅ Phase 5 — Check-in + Live Dashboard
 
-### Block 5.A — Check-in/live backend
+### 🟩 Block 5.A — Check-in/live backend
+- [x] Task 5.A.1 — Check-in endpoint with duplicate detection (`POST /api/checkins`)
+- [x] Task 5.A.2 — Manual override search (`GET /api/registrations?eventId=&query=`)
+- [x] Task 5.A.3 — Extended live aggregation (`GET /api/events/:id/checkins/live`)
+- [x] All backend verification completed
+- [x] Backend block completed
+
 **Depends on:** Block 3.A + Block 4.A merged
 
 **Task 5.A.1 — Check-in endpoint with duplicate detection**
@@ -474,7 +480,13 @@ Verify: all eight fields return correct values matching manually-verified test d
 
 **Commit & merge Block 5.A.**
 
-### Block 5.B — Check-in/live frontend
+### 🟩 Block 5.B — Check-in/live frontend
+- [x] Task 5.B.1 — Scanner screen (`Scanner.jsx`)
+- [x] Task 5.B.2 — StatDome + VitalsStrip components
+- [x] Task 5.B.3 — Live dashboard page (`Live.jsx`, `usePolling.js`)
+- [x] All frontend verification completed
+- [x] Frontend block completed
+
 **Depends on:** Block 5.A merged
 
 **Task 5.B.1 — Scanner screen**
@@ -507,6 +519,16 @@ Verify: a check-in from Task 5.B.1 is reflected on this dashboard within one pol
 with all 8 values correct.
 
 **Commit & merge Block 5.B.**
+
+### ✅ Phase 5 Milestones
+- [x] Check-in endpoint with 10-second duplicate scan protection implemented
+- [x] Manual override attendee search endpoint implemented
+- [x] Extended live aggregation metrics endpoint (8 PRD fields) implemented
+- [x] Volunteer camera-based QR Scanner screen implemented
+- [x] StatDome and VitalsStrip components created
+- [x] Organizer Live Attendance Dashboard page created with periodic polling
+- [x] Phase 5 marked as COMPLETE
+
 
 ---
 
