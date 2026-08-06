@@ -13,9 +13,8 @@ function StatDome({ title, value, subtext = '', icon = null, className = '' }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-clay border border-white/15 bg-slate-900/60 p-6 shadow-glass backdrop-blur-glass transition-all duration-300 ${
-        pulsing ? 'scale-[1.03] shadow-[0_0_25px_rgba(47,208,196,0.4)] border-teal-live' : ''
-      } ${className}`}
+      className={`relative overflow-hidden rounded-clay border border-white/15 bg-slate-900/60 p-6 shadow-glass backdrop-blur-glass transition-all duration-300 ${pulsing ? 'scale-[1.03] shadow-[0_0_25px_rgba(47,208,196,0.4)] border-teal-live' : ''
+        } ${className}`}
     >
       <div className="flex items-center justify-between">
         <span className="font-body text-xs font-bold uppercase tracking-wider text-slate-300">{title}</span>
@@ -37,4 +36,3 @@ function StatDome({ title, value, subtext = '', icon = null, className = '' }) {
 }
 
 export default StatDome;
-
