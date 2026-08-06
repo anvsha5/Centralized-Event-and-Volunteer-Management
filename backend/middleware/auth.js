@@ -36,4 +36,22 @@ async function auth(req, res, next) {
   return next();
 }
 
-module.exports = { auth, verifySessionToken };
+async function optionalAuth(req, res, next) {
+  const header = req.headers.authorization;
+  if (header && header.startsWith('Bearer ')) {
+    const token = header.slice(7);
+    const user = await verifySessionToken(token);
+    if (user) {
+      req.user = {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
+    }
+  }
+  return next();
+}
+
+module.exports = { auth, optionalAuth, verifySessionToken };
+

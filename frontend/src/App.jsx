@@ -7,7 +7,9 @@ import EventForm from './routes/organizer/EventForm';
 import Volunteers from './routes/organizer/Volunteers';
 import Onboarding from './routes/volunteer/Onboarding';
 import MyTasks from './routes/volunteer/MyTasks';
-import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
+import Scanner from './routes/volunteer/Scanner';
+import Live from './routes/organizer/Live';
+import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
 import MyTicket from './routes/attendee/MyTicket';
@@ -19,9 +21,14 @@ function AppNavbar() {
     <nav className="flex items-center justify-between border-b border-glass-white/10 px-6 py-4 text-sm backdrop-blur-md">
       <div className="flex gap-4">
         {!token ? (
-          <Link to="/login" className="text-teal-live hover:underline">
-            Login
-          </Link>
+          <>
+            <Link to="/events" className="text-teal-live hover:underline">
+              Events Directory
+            </Link>
+            <Link to="/login" className="text-glass-white/70 hover:text-glass-white">
+              Login
+            </Link>
+          </>
         ) : (
           <>
             {role === 'organizer' && (
@@ -32,12 +39,18 @@ function AppNavbar() {
                 <Link to="/organizer/volunteers" className="text-teal-live hover:underline">
                   Volunteers & Tasks
                 </Link>
+                <Link to="/organizer/live" className="text-teal-live hover:underline">
+                  Live Dashboard
+                </Link>
               </>
             )}
             {role === 'volunteer' && (
               <>
                 <Link to="/volunteer/tasks" className="text-teal-live hover:underline">
                   My Tasks
+                </Link>
+                <Link to="/volunteer/scanner" className="text-teal-live hover:underline">
+                  Scanner
                 </Link>
                 <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
                   Onboarding & Profile
@@ -73,7 +86,7 @@ function AppNavbar() {
 function RootRedirect() {
   const { token, role, loading } = useAuth();
   if (loading) return null;
-  if (!token) return <Navigate to="/login" replace />;
+  if (!token) return <Navigate to="/events" replace />;
   if (role === 'organizer') return <Navigate to="/organizer" replace />;
   if (role === 'volunteer') return <Navigate to="/volunteer/tasks" replace />;
   return <Navigate to="/attendee" replace />;
@@ -88,6 +101,7 @@ function App() {
 
           <Routes>
             {/* Public Event & Registration Routes */}
+            <Route path="/events" element={<AttendeeDashboard />} />
             <Route path="/events/:id/public" element={<EventPage />} />
             <Route path="/events/:id/register" element={<RegisterForm />} />
             <Route path="/attendee/ticket/:id" element={<MyTicket />} />
@@ -126,6 +140,22 @@ function App() {
               }
             />
             <Route
+              path="/organizer/live"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Live />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/live/:eventId"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Live />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
@@ -142,6 +172,14 @@ function App() {
               }
             />
             <Route
+              path="/volunteer/scanner"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <Scanner />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer/onboarding"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
@@ -153,7 +191,7 @@ function App() {
               path="/attendee"
               element={
                 <ProtectedRoute allowedRoles={['attendee']}>
-                  <AttendeePlaceholder />
+                  <AttendeeDashboard />
                 </ProtectedRoute>
               }
             />
@@ -164,5 +202,7 @@ function App() {
     </AuthProvider>
   );
 }
+
+
 
 export default App;

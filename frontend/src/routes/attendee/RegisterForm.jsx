@@ -95,7 +95,13 @@ export default function RegisterForm() {
           {/* QR Ticket Display */}
           <div className="mx-auto my-4 w-64 rounded-2xl bg-white p-4 shadow-xl border border-glass-white/20">
             {qrCode ? (
-              <img src={qrCode} alt="Ticket QR Code" className="w-full h-full object-contain mx-auto" />
+              <img
+                src={qrCode}
+                alt="Ticket QR Code"
+                width={400}
+                height={400}
+                className="w-full h-auto aspect-square object-contain mx-auto block"
+              />
             ) : (
               <div className="p-6 text-xs text-black/60">QR Code Unavailable</div>
             )}

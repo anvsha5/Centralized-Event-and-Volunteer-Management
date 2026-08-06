@@ -39,6 +39,10 @@ app.use('/api', volunteerRoutes);
 const taskRoutes = require('./routes/tasks');
 app.use('/api', taskRoutes);
 
+const checkinRoutes = require('./routes/checkins');
+app.use('/api', checkinRoutes);
+
+
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event-volunteer-portal';
 
 mongoose
