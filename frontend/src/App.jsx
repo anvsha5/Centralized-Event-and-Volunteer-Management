@@ -16,6 +16,9 @@ import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
 import MyTicket from './routes/attendee/MyTicket';
+import EventTimeline from './routes/organizer/EventTimeline';
+import VolunteerTimeline from './routes/volunteer/VolunteerTimeline';
+import AttendeeTimeline from './routes/attendee/AttendeeTimeline';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
@@ -48,6 +51,9 @@ function AppNavbar() {
                 <Link to="/organizer/issues" className="text-teal-live hover:underline">
                   Issue Triage
                 </Link>
+                <Link to="/organizer/timeline" className="text-teal-live hover:underline">
+                  Timeline
+                </Link>
               </>
             )}
             {role === 'volunteer' && (
@@ -61,6 +67,9 @@ function AppNavbar() {
                 <Link to="/volunteer/scanner" className="text-teal-live hover:underline">
                   Scanner
                 </Link>
+                <Link to="/volunteer/timeline" className="text-teal-live hover:underline">
+                  Timeline
+                </Link>
                 <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
                   Onboarding & Profile
                 </Link>
@@ -70,9 +79,14 @@ function AppNavbar() {
               </>
             )}
             {role === 'attendee' && (
-              <Link to="/attendee" className="text-teal-live hover:underline">
-                Attendee Home
-              </Link>
+              <>
+                <Link to="/attendee" className="text-teal-live hover:underline">
+                  Attendee Home
+                </Link>
+                <Link to="/attendee/timeline" className="text-teal-live hover:underline">
+                  Schedule
+                </Link>
+              </>
             )}
           </>
         )}
@@ -176,6 +190,14 @@ function App() {
               }
             />
             <Route
+              path="/organizer/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <EventTimeline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
@@ -208,6 +230,14 @@ function App() {
               }
             />
             <Route
+              path="/volunteer/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <VolunteerTimeline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer/onboarding"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
@@ -228,6 +258,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['attendee']}>
                   <AttendeeDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <AttendeeTimeline />
                 </ProtectedRoute>
               }
             />

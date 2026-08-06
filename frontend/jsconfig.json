@@ -2,11 +2,10 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "checkJs": false,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./src"
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*"]
 }
