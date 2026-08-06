@@ -4,6 +4,7 @@ import { getEvent } from '../../api/events';
 import GlassPanel from '../../components/glass/GlassPanel';
 import ClayButton from '../../components/clay/ClayButton';
 import ClayChip from '../../components/clay/ClayChip';
+import AnnouncementFeed from '../../components/AnnouncementFeed';
 
 export default function EventPage() {
   const { id } = useParams();
@@ -121,6 +122,8 @@ export default function EventPage() {
           </Link>
         </div>
       </GlassPanel>
+
+      <AnnouncementFeed eventId={event._id} />
     </div>
   );
 }

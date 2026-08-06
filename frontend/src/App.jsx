@@ -200,6 +200,14 @@ function App() {
               }
             />
             <Route
+              path="/organizer/events/:id/announcements"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Announcements />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>

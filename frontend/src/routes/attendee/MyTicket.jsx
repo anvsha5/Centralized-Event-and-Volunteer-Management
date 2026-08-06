@@ -4,6 +4,7 @@ import { getRegistration, cancelRegistration } from '../../api/registrations';
 import GlassPanel from '../../components/glass/GlassPanel';
 import ClayButton from '../../components/clay/ClayButton';
 import ClayChip from '../../components/clay/ClayChip';
+import AnnouncementFeed from '../../components/AnnouncementFeed';
 
 export default function MyTicket() {
   const { id } = useParams();
@@ -173,6 +174,10 @@ export default function MyTicket() {
           </Link>
         </div>
       </GlassPanel>
+
+      {event && event._id && (
+        <AnnouncementFeed eventId={event._id} sessionId={registration.sessionId} />
+      )}
     </div>
   );
 }
