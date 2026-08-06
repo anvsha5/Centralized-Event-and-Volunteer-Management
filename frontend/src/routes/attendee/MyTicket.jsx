@@ -163,6 +163,15 @@ export default function MyTicket() {
             </button>
           </div>
         )}
+
+        <div className="flex flex-wrap justify-center gap-3 pt-2">
+          <Link to={`/attendee/feedback/${id}`}>
+            <ClayButton variant="secondary">Leave feedback</ClayButton>
+          </Link>
+          <Link to={`/attendee/certificate/${id}`}>
+            <ClayButton>View certificate</ClayButton>
+          </Link>
+        </div>
       </GlassPanel>
     </div>
   );

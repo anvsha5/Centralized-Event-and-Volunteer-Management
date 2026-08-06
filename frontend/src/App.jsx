@@ -16,6 +16,8 @@ import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
 import MyTicket from './routes/attendee/MyTicket';
+import Feedback from './routes/attendee/Feedback';
+import Certificate from './routes/attendee/Certificate';
 import EventTimeline from './routes/organizer/EventTimeline';
 import VolunteerTimeline from './routes/volunteer/VolunteerTimeline';
 import AttendeeTimeline from './routes/attendee/AttendeeTimeline';
@@ -258,6 +260,22 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['attendee']}>
                   <AttendeeDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/feedback/:id"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <Feedback />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/certificate/:id"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <Certificate />
                 </ProtectedRoute>
               }
             />

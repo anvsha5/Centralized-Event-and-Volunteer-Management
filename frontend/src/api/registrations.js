@@ -33,3 +33,29 @@ export async function cancelRegistration(id) {
   }
   return data;
 }
+
+export async function submitFeedback(id, payload) {
+  const res = await fetch(`${API_BASE}/registrations/${id}/feedback`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const error = new Error(data.error || 'Failed to submit feedback');
+    error.status = res.status;
+    throw error;
+  }
+  return data;
+}
+
+export async function getCertificate(id) {
+  const res = await fetch(`${API_BASE}/registrations/${id}/certificate`);
+  const data = await res.json();
+  if (!res.ok) {
+    const error = new Error(data.error || 'Failed to fetch certificate');
+    error.status = res.status;
+    throw error;
+  }
+  return data;
+}
