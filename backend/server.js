@@ -30,6 +30,9 @@ app.get('/api/me', auth, authController.getMe);
 const eventRoutes = require('./routes/events');
 app.use('/api/events', eventRoutes);
 
+const announcementRoutes = require('./routes/announcements');
+app.use('/api/events', announcementRoutes);
+
 const registrationRoutes = require('./routes/registrations');
 app.use('/api', registrationRoutes);
 

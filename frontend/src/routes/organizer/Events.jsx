@@ -110,6 +110,11 @@ function Events() {
                 </p>
               </div>
               <div className="flex items-center gap-2">
+                <Link to={`/organizer/events/${event._id}/announcements`}>
+                  <ClayButton className="whitespace-nowrap bg-amber-ai/20 text-amber-ai hover:bg-amber-ai/30">
+                    Announcements
+                  </ClayButton>
+                </Link>
                 <Link to={`/organizer/events/${event._id}/resources`}>
                   <ClayButton className="whitespace-nowrap bg-teal-live/20 text-teal-live hover:bg-teal-live/30">
                     Resources ({event.resources?.length || 0})
