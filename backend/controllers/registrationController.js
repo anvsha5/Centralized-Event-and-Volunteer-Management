@@ -169,3 +169,28 @@ exports.getRegistration = async (req, res) => {
     return res.status(500).json({ error: err.message || 'Failed to fetch registration' });
   }
 };
+
+/**
+ * Task 5.A.2 — Manual override search
+ * GET /api/registrations?eventId=&query=
+ */
+exports.searchRegistrations = async (req, res) => {
+  const { eventId, query } = req.query;
+
+  try {
+    const filter = {};
+    if (eventId) {
+      filter.eventId = eventId;
+    }
+    if (query && query.trim() !== '') {
+      const regex = new RegExp(query.trim(), 'i');
+      filter.$or = [{ name: regex }, { phone: regex }, { email: regex }];
+    }
+
+    const registrations = await Registration.find(filter).limit(50).sort({ name: 1 });
+    return res.json(registrations);
+  } catch (err) {
+    return res.status(500).json({ error: err.message || 'Failed to search registrations' });
+  }
+};
+

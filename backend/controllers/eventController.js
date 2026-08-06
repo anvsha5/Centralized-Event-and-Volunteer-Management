@@ -70,23 +70,20 @@ async function getEvent(req, res) {
 async function listEvents(req, res) {
   try {
     const { organizerId } = req.query;
+    let filter = {};
 
-    if (!organizerId) {
-      return res.status(400).json({ error: 'organizerId query param is required' });
-    }
-
-    let filter;
-
-    if (organizerId === 'me') {
-      if (!req.user) {
-        return res.status(401).json({ error: 'Unauthorized' });
+    if (organizerId) {
+      if (organizerId === 'me') {
+        if (!req.user) {
+          return res.status(401).json({ error: 'Unauthorized' });
+        }
+        filter = { organizerId: req.user.id };
+      } else {
+        if (!mongoose.Types.ObjectId.isValid(organizerId)) {
+          return res.status(400).json({ error: 'Invalid organizerId' });
+        }
+        filter = { organizerId };
       }
-      filter = { organizerId: req.user.id };
-    } else {
-      if (!mongoose.Types.ObjectId.isValid(organizerId)) {
-        return res.status(400).json({ error: 'Invalid organizerId' });
-      }
-      filter = { organizerId };
     }
 
     const events = await Event.find(filter).sort({ createdAt: -1 });
@@ -96,6 +93,7 @@ async function listEvents(req, res) {
     return res.status(500).json({ error: 'Failed to list events' });
   }
 }
+
 
 async function updateEvent(req, res) {
   try {

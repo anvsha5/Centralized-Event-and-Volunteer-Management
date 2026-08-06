@@ -33,8 +33,20 @@ app.use('/api/events', eventRoutes);
 const registrationRoutes = require('./routes/registrations');
 app.use('/api', registrationRoutes);
 
+const volunteerRoutes = require('./routes/volunteers');
+app.use('/api', volunteerRoutes);
+
+const taskRoutes = require('./routes/tasks');
+app.use('/api', taskRoutes);
+
+const checkinRoutes = require('./routes/checkins');
+app.use('/api', checkinRoutes);
+
+
+const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event-volunteer-portal';
+
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(mongoUri)
   .then(() => {
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
