@@ -5,6 +5,7 @@ import GlassPanel from '../../components/glass/GlassPanel';
 import ClayButton from '../../components/clay/ClayButton';
 import { getMyTasks, getMyVolunteerProfile } from '../../api/volunteers';
 import { updateTaskStatus } from '../../api/tasks';
+import NotificationFeed from './NotificationFeed';
 
 function MyTasks() {
   const { token, user } = useAuth();
@@ -75,7 +76,13 @@ function MyTasks() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link to="/volunteer/report-issue">
+            <ClayButton className="bg-coral-alert text-white text-xs font-semibold shadow-clay">
+              🚨 Report Issue
+            </ClayButton>
+          </Link>
+
           <Link to="/volunteer/trust-card">
             <ClayButton className="bg-amber-ai text-base-ink text-xs font-semibold">
               AI Trust Card
@@ -84,13 +91,13 @@ function MyTasks() {
 
           <Link to="/volunteer/onboarding">
             <ClayButton className="bg-glass-white/20 text-glass-white text-xs">
-              ⚙️ My Profile & Skills
+              ⚙️ My Profile
             </ClayButton>
           </Link>
 
           <Link to="/volunteer/scanner">
             <ClayButton className="bg-teal-live text-base-ink text-xs font-semibold">
-              📷 Open Scanner
+              📷 Scanner
             </ClayButton>
           </Link>
         </div>
@@ -117,6 +124,9 @@ function MyTasks() {
           {error}
         </div>
       )}
+
+      {/* Notification Feed Glass Panel (Section 5.9) */}
+      <NotificationFeed />
 
       {/* Task List */}
       <div className="space-y-4">
