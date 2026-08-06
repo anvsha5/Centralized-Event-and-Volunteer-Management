@@ -1,6 +1,7 @@
 const Task = require('../models/Task');
 const TaskAssignment = require('../models/TaskAssignment');
 const VolunteerProfile = require('../models/VolunteerProfile');
+const Notification = require('../models/Notification');
 const { recalculateScore } = require('../services/reliabilityService');
 
 // POST /api/tasks
@@ -179,6 +180,20 @@ exports.assignTask = async (req, res) => {
     await assignment.populate('volunteerId', 'name email role');
     await assignment.populate('taskId');
 
+    // Create Notification trigger
+    try {
+      await Notification.create({
+        userId: assignment.volunteerId._id || assignment.volunteerId,
+        eventId: task.eventId,
+        type: 'task_assigned',
+        message: `You have been assigned to task: "${task.title}"`,
+        relatedId: task._id,
+        read: false,
+      });
+    } catch (notifErr) {
+      console.error('Failed to create task_assigned notification:', notifErr);
+    }
+
     return res.status(201).json(assignment);
   } catch (error) {
     console.error('Error assigning task:', error);
@@ -210,6 +225,24 @@ exports.updateAssignmentStatus = async (req, res) => {
     }
 
     await recalculateScore(assignment.volunteerId?._id || assignment.volunteerId);
+
+    // Create Notification trigger
+    try {
+      const taskObj = assignment.taskId;
+      const notifType = status === 'in_progress' ? 'shift_changed' : 'task_updated';
+      const taskTitle = taskObj ? taskObj.title : 'Task';
+
+      await Notification.create({
+        userId: assignment.volunteerId?._id || assignment.volunteerId,
+        eventId: taskObj ? taskObj.eventId : null,
+        type: notifType,
+        message: `Your task "${taskTitle}" status was updated to ${status}`,
+        relatedId: taskObj ? taskObj._id : assignment._id,
+        read: false,
+      });
+    } catch (notifErr) {
+      console.error('Failed to create task_updated notification:', notifErr);
+    }
 
     return res.status(200).json(assignment);
   } catch (error) {
