@@ -632,7 +632,7 @@ Verify: toggling a resource persists after a page refresh.
 
 ---
 
-## Phase 8 — Issue Reporting (photo + team tag) + Notifications
+## ✅ Phase 8 — Issue Reporting (photo + team tag) + Notifications
 
 ### Block 8.A1 — Issues backend
 **Depends on:** Block 0.A.4 (uploads folder) merged
@@ -732,9 +732,21 @@ Verify: assigning a task to a volunteer produces a visible feed entry without a 
 
 **Commit & merge Block 8.B.**
 
+### ✅ Phase 8 Milestones
+- [x] Upload service for photo storage implemented
+- [x] Issue creation, listing with teamTag filter, and status update endpoints implemented
+- [x] Notification triggers for task assignment and status updates implemented
+- [x] GET and PATCH endpoints for notifications implemented
+- [x] Event reminder scheduled background check implemented
+- [x] ReportIssue form with photo upload created and linked to QR scanner
+- [x] Organizer Issue Triage Board with team filter, priority stripes, and photo lightbox implemented
+- [x] Volunteer Notification Feed created and integrated into My Tasks
+- [x] Phase 8 marked as COMPLETE
+
+
 ---
 
-## Phase 9 — Event Timeline
+## ✅ Phase 9 — Event Timeline
 
 ### Block 9.A — Timeline backend + shared component
 **Depends on:** Block 2.A + Block 4.A merged
@@ -763,6 +775,15 @@ Verify: the organizer view shows everything; the volunteer view highlights only 
 shifts; the attendee view highlights only their registered session.
 
 **Commit & merge Block 9.A.**
+
+### ✅ Phase 9 Milestones
+- [x] GET /api/events/:id/timeline endpoint implemented merging sessions and task shifts chronologically
+- [x] Reusable TimelineRail glass component with vertical teal rail and clay dot markers built
+- [x] EventTimeline route with event selector built for organizers
+- [x] VolunteerTimeline thin wrapper route with shift highlighting built
+- [x] AttendeeTimeline thin wrapper route with schedule highlighting built
+- [x] Navigation links and protected routes added to App.jsx
+- [x] Phase 9 marked as COMPLETE
 
 ---
 

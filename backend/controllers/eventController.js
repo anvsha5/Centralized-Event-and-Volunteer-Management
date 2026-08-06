@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Event = require('../models/Event');
+const Task = require('../models/Task');
+const TaskAssignment = require('../models/TaskAssignment');
 
 async function createEvent(req, res) {
   try {
@@ -187,10 +189,88 @@ async function patchResourceStatus(req, res) {
   }
 }
 
+async function getEventTimeline(req, res) {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid event id' });
+    }
+
+    const event = await Event.findById(id);
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    // 1. Map embedded sessions
+    const sessionItems = (event.sessions || []).map((session) => ({
+      id: session._id ? session._id.toString() : undefined,
+      time: session.startTime,
+      endTime: session.endTime,
+      type: 'session',
+      title: session.title,
+      location: session.room || event.venue || '',
+      speaker: session.speaker || '',
+      description: session.speaker ? `Speaker: ${session.speaker}` : '',
+    }));
+
+    // 2. Fetch Tasks and TaskAssignments for this event
+    const tasks = await Task.find({ eventId: id });
+    const taskIds = tasks.map((t) => t._id);
+
+    const assignments = await TaskAssignment.find({ taskId: { $in: taskIds } })
+      .populate('volunteerId', 'name email')
+      .populate('taskId');
+
+    const shiftItems = assignments.map((assignment) => ({
+      id: assignment._id.toString(),
+      taskId: assignment.taskId ? assignment.taskId._id.toString() : null,
+      time: assignment.taskId ? assignment.taskId.startTime : assignment.createdAt,
+      endTime: assignment.taskId ? assignment.taskId.endTime : null,
+      type: 'shift',
+      title: assignment.taskId ? assignment.taskId.title : 'Volunteer Shift',
+      location: assignment.taskId ? assignment.taskId.location : '',
+      assignedTo: assignment.volunteerId ? assignment.volunteerId._id.toString() : null,
+      volunteerName: assignment.volunteerId ? assignment.volunteerId.name : 'Unassigned',
+      status: assignment.status,
+    }));
+
+    const assignedTaskIds = new Set(
+      assignments.map((a) => a.taskId && a.taskId._id.toString())
+    );
+
+    const unassignedTaskItems = tasks
+      .filter((t) => !assignedTaskIds.has(t._id.toString()))
+      .map((t) => ({
+        id: t._id.toString(),
+        taskId: t._id.toString(),
+        time: t.startTime,
+        endTime: t.endTime,
+        type: 'shift',
+        title: t.title,
+        location: t.location,
+        assignedTo: null,
+        volunteerName: 'Unassigned',
+        status: 'unassigned',
+      }));
+
+    // 3. Merge and sort chronologically by start time
+    const timeline = [...sessionItems, ...shiftItems, ...unassignedTaskItems].sort(
+      (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+    );
+
+    return res.json(timeline);
+  } catch (error) {
+    console.error('getEventTimeline error:', error);
+    return res.status(500).json({ error: 'Failed to fetch event timeline' });
+  }
+}
+
 module.exports = {
   createEvent,
   getEvent,
   listEvents,
   updateEvent,
   patchResourceStatus,
+  getEventTimeline,
 };

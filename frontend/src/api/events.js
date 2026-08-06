@@ -80,3 +80,15 @@ export async function patchResourceStatus(token, eventId, resourceId, status) {
   }
   return data;
 }
+
+export async function getEventTimeline(token, eventId) {
+  const res = await fetch(`${API_BASE}/events/${eventId}/timeline`, {
+    headers: token ? authHeaders(token) : {},
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to fetch event timeline');
+  }
+  return data;
+}
