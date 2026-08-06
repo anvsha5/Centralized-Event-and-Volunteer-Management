@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import GlassPanel from '../../components/glass/GlassPanel';
 import ClayButton from '../../components/clay/ClayButton';
@@ -102,13 +103,21 @@ function Scanner() {
           <p className="text-xs text-white/60">Scan attendee QR code for check-in / check-out</p>
         </div>
 
-        {/* Manual Override Button */}
-        <ClayButton
-          onClick={() => setManualModalOpen(true)}
-          className="!px-3 !py-1.5 text-xs bg-white/10 text-white hover:bg-white/20 border border-white/20"
-        >
-          🔍 Manual Search
-        </ClayButton>
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          <Link to="/volunteer/report-issue">
+            <ClayButton className="!px-3 !py-1.5 text-xs bg-coral-alert text-white font-bold shadow-clay hover:brightness-110">
+              🚨 Report Issue
+            </ClayButton>
+          </Link>
+
+          <ClayButton
+            onClick={() => setManualModalOpen(true)}
+            className="!px-3 !py-1.5 text-xs bg-white/10 text-white hover:bg-white/20 border border-white/20"
+          >
+            🔍 Search
+          </ClayButton>
+        </div>
       </div>
 
       {/* Mode Switcher */}
