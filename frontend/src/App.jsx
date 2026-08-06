@@ -4,13 +4,23 @@ import Login from './routes/auth/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Events from './routes/organizer/Events';
 import EventForm from './routes/organizer/EventForm';
-import ResourceInventory from './routes/organizer/ResourceInventory';
-import Announcements from './routes/organizer/Announcements';
-import VolunteerPlaceholder from './routes/volunteer/VolunteerPlaceholder';
-import AttendeePlaceholder from './routes/attendee/AttendeePlaceholder';
+import Volunteers from './routes/organizer/Volunteers';
+import Onboarding from './routes/volunteer/Onboarding';
+import MyTasks from './routes/volunteer/MyTasks';
+import Scanner from './routes/volunteer/Scanner';
+import MyTrustCard from './routes/volunteer/MyTrustCard';
+import Live from './routes/organizer/Live';
+import Issues from './routes/organizer/Issues';
+import ReportIssue from './routes/volunteer/ReportIssue';
+import AttendeeDashboard from './routes/attendee/AttendeeDashboard';
 import EventPage from './routes/attendee/EventPage';
 import RegisterForm from './routes/attendee/RegisterForm';
 import MyTicket from './routes/attendee/MyTicket';
+import Feedback from './routes/attendee/Feedback';
+import Certificate from './routes/attendee/Certificate';
+import EventTimeline from './routes/organizer/EventTimeline';
+import VolunteerTimeline from './routes/volunteer/VolunteerTimeline';
+import AttendeeTimeline from './routes/attendee/AttendeeTimeline';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
@@ -19,25 +29,66 @@ function AppNavbar() {
     <nav className="flex items-center justify-between border-b border-glass-white/10 px-6 py-4 text-sm backdrop-blur-md">
       <div className="flex gap-4">
         {!token ? (
-          <Link to="/login" className="text-teal-live hover:underline">
-            Login
-          </Link>
+          <>
+            <Link to="/events" className="text-teal-live hover:underline">
+              Events Directory
+            </Link>
+            <Link to="/login" className="text-glass-white/70 hover:text-glass-white">
+              Login
+            </Link>
+          </>
         ) : (
           <>
             {role === 'organizer' && (
-              <Link to="/organizer" className="text-teal-live hover:underline">
-                Events
-              </Link>
+              <>
+                <Link to="/organizer" className="text-teal-live hover:underline">
+                  Events
+                </Link>
+                <Link to="/organizer/volunteers" className="text-teal-live hover:underline">
+                  Volunteers & Tasks
+                </Link>
+                <Link to="/organizer/live" className="text-teal-live hover:underline">
+                  Live Dashboard
+                </Link>
+                <Link to="/organizer/issues" className="text-teal-live hover:underline">
+                  Issue Triage
+                </Link>
+                <Link to="/organizer/timeline" className="text-teal-live hover:underline">
+                  Timeline
+                </Link>
+              </>
             )}
             {role === 'volunteer' && (
-              <Link to="/volunteer" className="text-teal-live hover:underline">
-                Volunteer Portal
-              </Link>
+              <>
+                <Link to="/volunteer/tasks" className="text-teal-live hover:underline">
+                  My Tasks
+                </Link>
+                <Link to="/volunteer/report-issue" className="text-teal-live hover:underline">
+                  Report Issue
+                </Link>
+                <Link to="/volunteer/scanner" className="text-teal-live hover:underline">
+                  Scanner
+                </Link>
+                <Link to="/volunteer/timeline" className="text-teal-live hover:underline">
+                  Timeline
+                </Link>
+                <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
+                  Onboarding & Profile
+                </Link>
+                <Link to="/volunteer/trust-card" className="text-teal-live hover:underline">
+                  My Trust Card
+                </Link>
+              </>
             )}
             {role === 'attendee' && (
-              <Link to="/attendee" className="text-teal-live hover:underline">
-                Attendee Home
-              </Link>
+              <>
+                <Link to="/attendee" className="text-teal-live hover:underline">
+                  Attendee Home
+                </Link>
+                <Link to="/attendee/timeline" className="text-teal-live hover:underline">
+                  Schedule
+                </Link>
+              </>
             )}
           </>
         )}
@@ -63,9 +114,9 @@ function AppNavbar() {
 function RootRedirect() {
   const { token, role, loading } = useAuth();
   if (loading) return null;
-  if (!token) return <Navigate to="/login" replace />;
+  if (!token) return <Navigate to="/events" replace />;
   if (role === 'organizer') return <Navigate to="/organizer" replace />;
-  if (role === 'volunteer') return <Navigate to="/volunteer" replace />;
+  if (role === 'volunteer') return <Navigate to="/volunteer/tasks" replace />;
   return <Navigate to="/attendee" replace />;
 }
 
@@ -78,6 +129,7 @@ function App() {
 
           <Routes>
             {/* Public Event & Registration Routes */}
+            <Route path="/events" element={<AttendeeDashboard />} />
             <Route path="/events/:id/public" element={<EventPage />} />
             <Route path="/events/:id/register" element={<RegisterForm />} />
             <Route path="/attendee/ticket/:id" element={<MyTicket />} />
@@ -108,10 +160,42 @@ function App() {
               }
             />
             <Route
-              path="/organizer/events/:id/resources"
+              path="/organizer/volunteers"
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
-                  <ResourceInventory />
+                  <Volunteers />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/live"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Live />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/live/:eventId"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Live />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/issues"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Issues />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <EventTimeline />
                 </ProtectedRoute>
               }
             />
@@ -127,7 +211,55 @@ function App() {
               path="/volunteer"
               element={
                 <ProtectedRoute allowedRoles={['volunteer']}>
-                  <VolunteerPlaceholder />
+                  <Navigate to="/volunteer/tasks" replace />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/tasks"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <MyTasks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/report-issue"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <ReportIssue />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/scanner"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <Scanner />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <VolunteerTimeline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/onboarding"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/volunteer/trust-card"
+              element={
+                <ProtectedRoute allowedRoles={['volunteer']}>
+                  <MyTrustCard />
                 </ProtectedRoute>
               }
             />
@@ -135,7 +267,31 @@ function App() {
               path="/attendee"
               element={
                 <ProtectedRoute allowedRoles={['attendee']}>
-                  <AttendeePlaceholder />
+                  <AttendeeDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/feedback/:id"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <Feedback />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/certificate/:id"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <Certificate />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/attendee/timeline"
+              element={
+                <ProtectedRoute allowedRoles={['attendee']}>
+                  <AttendeeTimeline />
                 </ProtectedRoute>
               }
             />
@@ -146,5 +302,7 @@ function App() {
     </AuthProvider>
   );
 }
+
+
 
 export default App;

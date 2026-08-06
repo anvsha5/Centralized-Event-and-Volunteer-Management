@@ -8,7 +8,8 @@ function authHeaders(token) {
 }
 
 export async function listEvents(token, organizerId = 'me') {
-  const res = await fetch(`${API_BASE}/events?organizerId=${encodeURIComponent(organizerId)}`, {
+  const url = organizerId ? `${API_BASE}/events?organizerId=${encodeURIComponent(organizerId)}` : `${API_BASE}/events`;
+  const res = await fetch(url, {
     headers: authHeaders(token),
   });
 
@@ -18,6 +19,16 @@ export async function listEvents(token, organizerId = 'me') {
   }
   return data;
 }
+
+export async function getPublicEvents() {
+  const res = await fetch(`${API_BASE}/events`);
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to fetch public events');
+  }
+  return data;
+}
+
 
 export async function getEvent(id) {
   const res = await fetch(`${API_BASE}/events/${id}`);
@@ -66,6 +77,18 @@ export async function patchResourceStatus(token, eventId, resourceId, status) {
   const data = await res.json();
   if (!res.ok) {
     throw new Error(data.error || 'Failed to update resource status');
+  }
+  return data;
+}
+
+export async function getEventTimeline(token, eventId) {
+  const res = await fetch(`${API_BASE}/events/${eventId}/timeline`, {
+    headers: token ? authHeaders(token) : {},
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to fetch event timeline');
   }
   return data;
 }
