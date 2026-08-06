@@ -23,6 +23,7 @@ import VolunteerTimeline from './routes/volunteer/VolunteerTimeline';
 import AttendeeTimeline from './routes/attendee/AttendeeTimeline';
 import Announcements from './routes/organizer/Announcements';
 import Analytics from './routes/organizer/Analytics';
+import ResourceInventory from './routes/organizer/ResourceInventory';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
@@ -161,6 +162,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <EventForm />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/events/:id/resources"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <ResourceInventory />
                 </ProtectedRoute>
               }
             />

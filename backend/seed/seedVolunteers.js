@@ -37,24 +37,54 @@ function pickMany(arr, count) {
 }
 
 async function ensureSeedEvent(organizerId) {
-  let event = await Event.findOne({ title: 'Phase6 Trust Card Seed Event' });
-  if (event) return event;
+  const startTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  const endTime = new Date(startTime.getTime() + 4 * 60 * 60 * 1000);
+  const sessionOneStart = new Date(startTime.getTime() + 30 * 60 * 1000);
+  const sessionTwoStart = new Date(startTime.getTime() + 2.5 * 60 * 60 * 1000);
 
-  event = await Event.create({
+  const demoPayload = {
     organizerId,
-    title: 'Phase6 Trust Card Seed Event',
-    description: 'Seed event for trust card demo data',
-    venue: 'Main Hall',
+    title: 'TechRush Demo Event',
+    description: 'Full demo event with sessions, resources, volunteers, and sample analytics data.',
+    venue: 'Main Auditorium',
     capacity: 500,
-    startTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    endTime: new Date(Date.now() + 26 * 60 * 60 * 1000),
+    startTime,
+    endTime,
     registrationDeadline: new Date(Date.now() + 12 * 60 * 60 * 1000),
     category: 'workshop',
     status: 'live',
-    sessions: [],
-    resources: [],
-  });
+    sessions: [
+      {
+        title: 'Opening Keynote',
+        topic: 'Welcome & overview',
+        room: 'Hall A',
+        startTime: sessionOneStart,
+        endTime: new Date(sessionOneStart.getTime() + 60 * 60 * 1000),
+      },
+      {
+        title: 'Hands-on Workshop',
+        topic: 'Volunteer operations walkthrough',
+        room: 'Hall B',
+        startTime: sessionTwoStart,
+        endTime: new Date(sessionTwoStart.getTime() + 90 * 60 * 1000),
+      },
+    ],
+    resources: [
+      { name: 'Projector', quantityNeeded: 2, status: 'delivered' },
+      { name: 'Wireless Mic', quantityNeeded: 4, status: 'pending' },
+      { name: 'Folding Chairs', quantityNeeded: 120, status: 'pending' },
+      { name: 'Extension Cords', quantityNeeded: 8, status: 'delivered' },
+    ],
+  };
 
+  let event = await Event.findOne({ title: 'TechRush Demo Event' });
+  if (event) {
+    Object.assign(event, demoPayload);
+    await event.save();
+    return event;
+  }
+
+  event = await Event.create(demoPayload);
   return event;
 }
 

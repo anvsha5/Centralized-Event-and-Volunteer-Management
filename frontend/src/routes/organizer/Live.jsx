@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import GlassPanel from '../../components/glass/GlassPanel';
+import ClayButton from '../../components/clay/ClayButton';
 import StatDome from '../../components/clay/StatDome';
 import VitalsStrip from '../../components/glass/VitalsStrip';
 import usePolling from '../../hooks/usePolling';
@@ -40,28 +41,30 @@ function Live() {
   const selectedEvent = events.find((e) => e._id === selectedEventId);
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6 text-white font-body">
+    <div className="min-h-screen bg-base-ink p-6 font-body text-glass-white">
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header & Event Selector */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1 className="font-heading text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+            <h1 className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-glass-white">
               Live Attendance Dashboard
-              <span className="inline-block h-3.5 w-3.5 rounded-full bg-teal-live animate-ping" />
+              <span className="inline-block h-3.5 w-3.5 animate-ping rounded-full bg-teal-live" />
             </h1>
-            <p className="text-sm text-white/60">Real-time attendance and operational vitals polling every 3s</p>
+            <p className="text-sm text-glass-white/60">
+              Real-time attendance and operational vitals polling every 3s
+            </p>
           </div>
 
           {events.length > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-white/60">Event:</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs text-glass-white/60">Event:</span>
               <select
                 value={selectedEventId}
                 onChange={(e) => {
                   setSelectedEventId(e.target.value);
                   navigate(`/organizer/live/${e.target.value}`);
                 }}
-                className="rounded-clay border border-white/20 bg-slate-900 px-3 py-1.5 text-sm font-medium text-white focus:outline-none focus:border-teal-live"
+                className="rounded-clay border border-glass-white/20 bg-base-ink px-3 py-1.5 text-sm font-medium text-glass-white focus:border-teal-live focus:outline-none"
               >
                 {events.map((evt) => (
                   <option key={evt._id} value={evt._id}>
@@ -69,20 +72,27 @@ function Live() {
                   </option>
                 ))}
               </select>
+              {selectedEventId && (
+                <Link to={`/organizer/events/${selectedEventId}/resources`}>
+                  <ClayButton className="whitespace-nowrap bg-teal-live/20 text-xs text-teal-live hover:bg-teal-live/30">
+                    Resources ({selectedEvent?.resources?.length || 0})
+                  </ClayButton>
+                </Link>
+              )}
             </div>
           )}
         </div>
 
         {/* Error banner */}
         {error && (
-          <GlassPanel className="border-rose-500/40 bg-rose-500/10 text-rose-200 text-sm">
+          <GlassPanel className="border-coral-alert/40 bg-coral-alert/10 text-sm text-coral-alert">
             Failed to fetch live data: {error}
           </GlassPanel>
         )}
 
         {/* Loading state */}
         {loading && !metrics && (
-          <GlassPanel className="p-8 text-center text-white/60">
+          <GlassPanel className="p-8 text-center text-glass-white/60">
             Connecting to live event data stream...
           </GlassPanel>
         )}
