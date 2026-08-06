@@ -99,7 +99,54 @@ async function summarizeSkillMatch(stats) {
   }
 }
 
+function fallbackAnalyticsSummary(funnelData, extendedData) {
+  const parts = [];
+  parts.push(
+    `${funnelData.checkedIn} of ${funnelData.registered} registered attendees checked in (${funnelData.dropOffPercent}% drop-off).`
+  );
+
+  if (extendedData.peakEntryTime) {
+    parts.push(`Peak entry was at ${extendedData.peakEntryTime} with ${extendedData.peakEntryCount} check-ins.`);
+  }
+
+  if (extendedData.mostCrowdedHall) {
+    parts.push(
+      `Most crowded hall was ${extendedData.mostCrowdedHall} at ${extendedData.mostCrowdedHallPeakOccupancyPercent}% peak occupancy.`
+    );
+  }
+
+  if (extendedData.issueCount?.total > 0) {
+    parts.push(
+      `${extendedData.issueCount.total} issues were reported (${extendedData.issueCount.totalResolved} resolved).`
+    );
+  }
+
+  return parts.join(' ');
+}
+
+async function summarizeAnalytics(funnelData, extendedData) {
+  if (!funnelData || funnelData.checkedIn === 0) {
+    return 'Not enough data yet';
+  }
+
+  const systemPrompt =
+    'You write concise, factual post-event analytics narratives for organizers. Cover the registration funnel and at least one operational metric (peak times, crowded halls, volunteer performance, or issues). Use only the numbers provided. Keep to 3-4 sentences. Do not invent facts.';
+  const userPrompt = `Create a grounded post-event summary from this JSON:\n${JSON.stringify({
+    funnel: funnelData,
+    extended: extendedData,
+  })}`;
+
+  try {
+    const text = await callAnthropic(systemPrompt, userPrompt);
+    return text || fallbackAnalyticsSummary(funnelData, extendedData);
+  } catch (error) {
+    console.error('summarizeAnalytics AI error:', error.message);
+    return fallbackAnalyticsSummary(funnelData, extendedData);
+  }
+}
+
 module.exports = {
   summarizeVolunteer,
   summarizeSkillMatch,
+  summarizeAnalytics,
 };

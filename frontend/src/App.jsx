@@ -21,6 +21,8 @@ import Certificate from './routes/attendee/Certificate';
 import EventTimeline from './routes/organizer/EventTimeline';
 import VolunteerTimeline from './routes/volunteer/VolunteerTimeline';
 import AttendeeTimeline from './routes/attendee/AttendeeTimeline';
+import Announcements from './routes/organizer/Announcements';
+import Analytics from './routes/organizer/Analytics';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
@@ -55,6 +57,9 @@ function AppNavbar() {
                 </Link>
                 <Link to="/organizer/timeline" className="text-teal-live hover:underline">
                   Timeline
+                </Link>
+                <Link to="/organizer/analytics" className="text-teal-live hover:underline">
+                  Analytics
                 </Link>
               </>
             )}
@@ -196,6 +201,22 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['organizer']}>
                   <EventTimeline />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/analytics"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/organizer/analytics/:eventId"
+              element={
+                <ProtectedRoute allowedRoles={['organizer']}>
+                  <Analytics />
                 </ProtectedRoute>
               }
             />

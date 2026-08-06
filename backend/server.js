@@ -54,6 +54,9 @@ app.use('/api', feedbackRoutes);
 const notificationRoutes = require('./routes/notifications');
 app.use('/api', notificationRoutes);
 
+const analyticsRoutes = require('./routes/analytics');
+app.use('/api', analyticsRoutes);
+
 const { startReminderService } = require('./services/reminderService');
 
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event-volunteer-portal';
