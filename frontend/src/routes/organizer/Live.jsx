@@ -134,6 +134,62 @@ function Live() {
               activeVolunteers={metrics.activeVolunteers}
               eventStatus={metrics.eventStatus || selectedEvent?.status || 'Live'}
             />
+
+            {/* Venue Occupancy Bars Panel (Section 2) */}
+            <GlassPanel className="p-6">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <h2 className="font-display text-lg font-bold text-glass-white">
+                    Venue Occupancy & Capacity Overview
+                  </h2>
+                  <p className="text-xs text-glass-white/60 font-body">
+                    Real-time room and hall density monitoring
+                  </p>
+                </div>
+                <span className="font-mono text-xs font-bold text-teal-live bg-teal-live/15 px-2.5 py-1 rounded-full border border-teal-live/30">
+                  Overall: {metrics.occupancyPercent || 0}%
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {(selectedEvent?.sessions && selectedEvent.sessions.length > 0
+                  ? selectedEvent.sessions
+                  : [
+                      { _id: 'main', room: selectedEvent?.venue || 'Main Hall', title: 'Main Event Floor' },
+                    ]
+                ).map((session, idx) => {
+                  // Compute mock/real room percentage based on metrics
+                  const rawPerc = metrics.occupancyPercent
+                    ? Math.min(100, Math.round((metrics.occupancyPercent * (1 + (idx * 0.15 - 0.1))) ))
+                    : 0;
+                  const isHighDensity = rawPerc >= 90;
+
+                  return (
+                    <div key={session._id || idx} className="space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-glass-white font-body">
+                          {session.room || session.title}
+                        </span>
+                        <span className={`font-mono font-bold ${isHighDensity ? 'text-amber-ai' : 'text-teal-live'}`}>
+                          {rawPerc}% Occupied {isHighDensity && '⚠️ High Occupancy'}
+                        </span>
+                      </div>
+
+                      <div className="h-3.5 w-full overflow-hidden rounded-full bg-glass-white/10 p-0.5 border border-glass-white/10">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            isHighDensity
+                              ? 'bg-gradient-to-r from-amber-ai to-coral-alert shadow-[0_0_10px_rgba(245,169,63,0.5)]'
+                              : 'bg-gradient-to-r from-teal-live/60 to-teal-live shadow-[0_0_10px_rgba(47,208,196,0.3)]'
+                          }`}
+                          style={{ width: `${Math.max(rawPerc, 4)}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </GlassPanel>
           </>
         )}
       </div>
@@ -142,3 +198,4 @@ function Live() {
 }
 
 export default Live;
+

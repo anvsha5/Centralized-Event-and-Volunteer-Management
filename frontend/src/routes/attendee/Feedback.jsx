@@ -49,18 +49,20 @@ function Feedback() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-3">
-            <div className="text-sm font-medium text-glass-white">How would you rate the event?</div>
-            <div className="flex flex-wrap gap-3">
+            <div className="text-sm font-semibold text-glass-white font-body">How would you rate the event?</div>
+            <div className="flex flex-wrap justify-center sm:justify-start gap-4">
               {[1, 2, 3, 4, 5].map((value) => (
                 <ClayButton
                   key={value}
                   type="button"
                   onClick={() => setRating(value)}
-                  className={`!h-12 !w-12 !rounded-full !px-0 !py-0 text-base font-semibold ${
-                    rating === value ? 'bg-teal-live text-base-ink ring-2 ring-teal-live/50' : ''
+                  className={`!h-14 !w-14 !rounded-full !px-0 !py-0 font-mono text-lg font-bold shadow-clay shadow-clay-dual border transition-all ${
+                    rating === value
+                      ? 'bg-teal-live text-base-ink ring-4 ring-teal-live/40 border-teal-live scale-110 shadow-[0_0_15px_rgba(47,208,196,0.5)]'
+                      : 'bg-clay-base text-base-ink border-white/20 hover:scale-105'
                   }`}
                 >
-                  {value}
+                  {value}★
                 </ClayButton>
               ))}
             </div>

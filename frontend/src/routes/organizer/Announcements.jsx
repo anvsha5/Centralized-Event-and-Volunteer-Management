@@ -119,61 +119,64 @@ function Announcements() {
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-glass-white/70 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-glass-white/70 mb-2">
                   Target Audience
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
+                <div className="flex flex-wrap gap-2.5 mb-3">
+                  <ClayChip
+                    selected={targetType === 'all'}
+                    onClick={() => setTargetType('all')}
+                    className="cursor-pointer font-bold py-1.5 px-3"
+                  >
+                    All Attendees
+                  </ClayChip>
+                  <ClayChip
+                    selected={targetType === 'session'}
+                    onClick={() => {
+                      if (event?.sessions && event.sessions.length > 0) {
+                        setTargetType('session');
+                      }
+                    }}
+                    className={`cursor-pointer font-bold py-1.5 px-3 ${!event?.sessions?.length ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  >
+                    Specific Session {!event?.sessions?.length ? '(No sessions)' : ''}
+                  </ClayChip>
+                </div>
+
+                {targetType === 'session' && event?.sessions?.length > 0 && (
+                  <div className="mt-2">
                     <select
-                      value={targetType}
-                      onChange={(e) => setTargetType(e.target.value)}
-                      className="w-full rounded-lg bg-base-ink/60 border border-glass-white/15 px-3 py-2 text-sm text-glass-white focus:outline-none focus:ring-1 focus:ring-teal-live"
+                      value={sessionId}
+                      onChange={(e) => setSessionId(e.target.value)}
+                      className="w-full rounded-glass bg-glass-white/5 border border-glass-white/15 px-3.5 py-2 text-sm text-glass-white focus:outline-none focus:border-teal-live"
                     >
-                      <option value="all">All Attendees</option>
-                      <option
-                        value="session"
-                        disabled={!event?.sessions || event.sessions.length === 0}
-                      >
-                        Specific Session {!event?.sessions?.length ? '(No sessions)' : ''}
-                      </option>
+                      {event.sessions.map((sess) => (
+                        <option key={sess._id} value={sess._id} className="bg-base-ink text-glass-white">
+                          {sess.title} ({sess.room})
+                        </option>
+                      ))}
                     </select>
                   </div>
-
-                  {targetType === 'session' && event?.sessions?.length > 0 && (
-                    <div>
-                      <select
-                        value={sessionId}
-                        onChange={(e) => setSessionId(e.target.value)}
-                        className="w-full rounded-lg bg-base-ink/60 border border-glass-white/15 px-3 py-2 text-sm text-glass-white focus:outline-none focus:ring-1 focus:ring-teal-live"
-                      >
-                        {event.sessions.map((sess) => (
-                          <option key={sess._id} value={sess._id}>
-                            {sess.title} ({sess.room})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-glass-white/70 mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-glass-white/70 mb-1">
                   Message
                 </label>
                 <textarea
                   rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Write your announcement here..."
-                  className="w-full rounded-lg bg-base-ink/60 border border-glass-white/15 p-3 text-sm text-glass-white focus:outline-none focus:ring-1 focus:ring-teal-live"
+                  placeholder="Write your announcement broadcast here..."
+                  className="w-full rounded-glass bg-glass-white/5 border border-glass-white/15 p-3.5 text-sm text-glass-white placeholder-glass-white/30 backdrop-blur-md focus:outline-none focus:border-teal-live font-body"
                   required
                 />
               </div>
 
               <div className="flex justify-end">
-                <ClayButton type="submit" disabled={submitting || !message.trim()}>
-                  {submitting ? 'Sending...' : 'Broadcast Announcement'}
+                <ClayButton type="submit" disabled={submitting || !message.trim()} className="bg-teal-live text-base-ink font-bold py-2.5 px-6">
+                  {submitting ? 'Broadcasting...' : 'Broadcast Announcement'}
                 </ClayButton>
               </div>
             </form>

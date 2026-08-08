@@ -235,18 +235,18 @@ function ReportIssue() {
               />
             </div>
 
-            {/* Team Tag Selector (Section 5.10) */}
+            {/* Team Tag Selector (Section 6 spec) */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-glass-white/70 mb-2">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-glass-white/80 mb-2 font-body">
                 Route to Team Tag *
               </label>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2.5">
                 {teamTags.map((tag) => (
                   <ClayChip
                     key={tag.key}
                     selected={teamTag === tag.key}
                     onClick={() => setTeamTag(tag.key)}
-                    className="cursor-pointer font-bold"
+                    className="cursor-pointer font-bold py-1.5 px-3"
                   >
                     {tag.label} Team
                   </ClayChip>

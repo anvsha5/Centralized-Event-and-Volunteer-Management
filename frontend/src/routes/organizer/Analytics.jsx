@@ -477,24 +477,24 @@ function Analytics() {
               </GlassPanel>
             </div>
 
-            {/* Section 4: AI-generated narrative */}
-            <GlassPanel className="border border-amber-ai/30 bg-amber-ai/5">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <ClayChip className="bg-amber-ai/20 text-amber-ai">AI</ClayChip>
+            {/* Section 4: AI-generated narrative (Section 5 spec) */}
+            <GlassPanel className="border border-amber-ai/60 bg-amber-ai/10 shadow-[0_0_25px_rgba(245,169,63,0.15)] p-6">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-amber-ai/20 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <ClayChip className="bg-amber-ai text-base-ink font-bold px-3 py-1">AI</ClayChip>
                   <h2 className="font-display text-lg font-bold text-glass-white">
-                    Event Summary
+                    Event Executive Summary
                   </h2>
                 </div>
-                <ClayButton onClick={handleCopyReport}>
-                  {copySuccess ? 'Copied!' : 'Copy report'}
+                <ClayButton onClick={handleCopyReport} className="bg-amber-ai text-base-ink font-bold text-xs py-1.5 px-3">
+                  {copySuccess ? 'Copied to Clipboard!' : 'Copy report'}
                 </ClayButton>
               </div>
 
               {noCheckins ? (
-                <p className="text-sm text-glass-white/60 italic">Not enough data yet</p>
+                <p className="text-sm text-glass-white/60 italic font-body">Not enough data available yet to generate executive summary.</p>
               ) : (
-                <p className="text-sm leading-relaxed text-glass-white/90">{summary}</p>
+                <p className="font-body text-sm leading-relaxed text-glass-white/95">{summary}</p>
               )}
             </GlassPanel>
           </>

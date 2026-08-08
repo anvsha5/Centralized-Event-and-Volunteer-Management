@@ -57,32 +57,32 @@ export default function EventPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 space-y-6">
       <GlassPanel className="p-6 md:p-8 space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <ClayChip variant="teal" className="uppercase tracking-wider text-xs font-semibold">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-glass-white/10 pb-4">
+          <ClayChip className="uppercase tracking-wider text-xs font-bold bg-teal-live text-base-ink">
             {event.category || 'Event'}
           </ClayChip>
-          <span className="text-xs text-glass-white/60 font-mono">
+          <span className="text-xs text-glass-white/60 font-mono font-bold">
             Capacity: {event.capacity} seats
           </span>
         </div>
 
         <div>
-          <h1 className="text-3xl font-extrabold text-glass-white tracking-tight">
+          <h1 className="font-display text-3xl md:text-4xl font-extrabold text-glass-white tracking-tight">
             {event.title}
           </h1>
-          <p className="mt-2 text-sm text-glass-white/80 leading-relaxed whitespace-pre-line">
+          <p className="mt-3 text-sm text-glass-white/85 leading-relaxed font-body whitespace-pre-line">
             {event.description}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-glass-white/10 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-glass-white/10 text-sm font-body">
           <div>
-            <span className="text-xs uppercase text-glass-white/50 block font-mono">Venue</span>
-            <span className="font-medium text-teal-live">{event.venue || 'TBA'}</span>
+            <span className="text-xs uppercase text-glass-white/50 block font-mono font-bold">Venue</span>
+            <span className="font-semibold text-teal-live text-base">{event.venue || 'TBA'}</span>
           </div>
           <div>
-            <span className="text-xs uppercase text-glass-white/50 block font-mono">Date & Time</span>
-            <span className="font-medium text-glass-white">{startDate} – {endDate}</span>
+            <span className="text-xs uppercase text-glass-white/50 block font-mono font-bold">Date & Time</span>
+            <span className="font-medium text-glass-white font-mono">{startDate} – {endDate}</span>
           </div>
         </div>
 

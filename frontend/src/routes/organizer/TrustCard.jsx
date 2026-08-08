@@ -95,55 +95,62 @@ function TrustCard({ token, volunteerId, volunteerName, onClose, asPage = false 
         )}
 
         {!loading && !error && data && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[140px_1fr]">
-              <ReliabilityRing reliabilityScore={data.reliabilityScore} />
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[140px_1fr] items-center rounded-glass border border-glass-white/10 bg-glass-white/5 p-4">
+                <ReliabilityRing reliabilityScore={data.reliabilityScore} />
+
+                <div>
+                  <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-glass-white/60 font-body">Skill Tags</div>
+                  <div className="flex flex-wrap gap-2">
+                    {Array.isArray(data.skills) && data.skills.length > 0 ? (
+                      data.skills.map((skill) => (
+                        <ClayChip key={skill} className="text-xs font-semibold">{skill}</ClayChip>
+                      ))
+                    ) : (
+                      <span className="text-xs text-glass-white/60 italic font-body">No skills onboarded yet.</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Grouped AI Sub-panel (Section 3 spec) */}
+              <div className="rounded-glass border border-amber-ai/60 bg-amber-ai/15 p-5 shadow-[0_0_20px_rgba(245,169,63,0.15)] space-y-4">
+                <div className="flex items-center justify-between">
+                  <ClayChip className="bg-amber-ai text-base-ink font-bold px-3 py-1">
+                    AI
+                  </ClayChip>
+                  <span className="text-[10px] uppercase tracking-wider text-amber-ai font-mono font-bold">
+                    Automated Assessment
+                  </span>
+                </div>
+
+                <div className="space-y-3 font-body">
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-amber-ai/90">Reliability Summary</div>
+                    <p className="mt-1 text-sm text-glass-white leading-relaxed">{data.reliabilitySummary || 'No task history recorded yet'}</p>
+                  </div>
+                  <div className="border-t border-amber-ai/20 pt-3">
+                    <div className="text-xs font-bold uppercase tracking-wider text-amber-ai/90">Skill Match Summary</div>
+                    <p className="mt-1 text-sm text-glass-white leading-relaxed">{data.skillMatchSummary || 'No task history recorded yet'}</p>
+                  </div>
+                </div>
+              </div>
 
               <div>
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-glass-white/60">Skills</div>
-                <div className="flex flex-wrap gap-2">
-                  {Array.isArray(data.skills) && data.skills.length > 0 ? (
-                    data.skills.map((skill) => (
-                      <ClayChip key={skill}>{skill}</ClayChip>
-                    ))
-                  ) : (
-                    <span className="text-sm text-glass-white/70">No skills added yet.</span>
-                  )}
-                </div>
+                <div className="mb-2.5 text-xs font-bold uppercase tracking-wider text-glass-white/60 font-body">Recent Event Tasks</div>
+                {Array.isArray(data.recentTasks) && data.recentTasks.length > 0 ? (
+                  <ul className="space-y-2">
+                    {data.recentTasks.map((title, index) => (
+                      <li key={`${title}-${index}`} className="rounded-clay bg-glass-white/10 px-4 py-2.5 text-xs font-medium text-glass-white border border-glass-white/10 flex items-center gap-2">
+                        <span>📌</span> {title}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="rounded-clay bg-glass-white/5 px-4 py-3 text-xs text-glass-white/60 italic">No completed tasks yet.</div>
+                )}
               </div>
             </div>
-
-            <div className="rounded-glass border border-amber-ai/50 bg-amber-ai/15 p-4">
-              <div className="mb-3">
-                <ClayChip className="bg-amber-ai text-base-ink">AI</ClayChip>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-glass-white/70">Reliability Summary</div>
-                  <p className="mt-1 text-sm text-glass-white">{data.reliabilitySummary || 'No task history yet'}</p>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-glass-white/70">Skill Match</div>
-                  <p className="mt-1 text-sm text-glass-white">{data.skillMatchSummary || 'No task history yet'}</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-glass-white/60">Recent Tasks</div>
-              {Array.isArray(data.recentTasks) && data.recentTasks.length > 0 ? (
-                <ul className="space-y-2">
-                  {data.recentTasks.map((title, index) => (
-                    <li key={`${title}-${index}`} className="rounded-clay bg-glass-white/10 px-3 py-2 text-sm text-glass-white">
-                      {title}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className="rounded-clay bg-glass-white/10 px-3 py-2 text-sm text-glass-white/70">No completed tasks yet.</div>
-              )}
-            </div>
-          </div>
         )}
       </GlassPanel>
     </div>

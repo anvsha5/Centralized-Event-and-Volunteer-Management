@@ -92,21 +92,24 @@ export default function RegisterForm() {
             </p>
           </div>
 
-          {/* QR Ticket Display */}
-          <div className="mx-auto my-4 w-64 rounded-2xl bg-white p-4 shadow-xl border border-glass-white/20">
+          {/* QR Ticket Display - Clean Separate Clay White Card */}
+          <div className="mx-auto my-6 w-72 rounded-[20px] bg-white p-5 shadow-2xl border-4 border-clay-base shadow-clay-dual text-base-ink">
+            <div className="mb-2 text-[10px] font-bold uppercase tracking-wider text-base-ink/60 font-mono">
+              Official Event Pass
+            </div>
             {qrCode ? (
               <img
                 src={qrCode}
                 alt="Ticket QR Code"
                 width={400}
                 height={400}
-                className="w-full h-auto aspect-square object-contain mx-auto block"
+                className="w-full h-auto aspect-square object-contain mx-auto block rounded-lg bg-white p-1"
               />
             ) : (
-              <div className="p-6 text-xs text-black/60">QR Code Unavailable</div>
+              <div className="p-6 text-xs text-base-ink/60">QR Code Unavailable</div>
             )}
-            <div className="mt-2 text-center text-xs font-mono text-gray-700 truncate">
-              {registration.qrToken}
+            <div className="mt-3 text-center text-xs font-mono font-bold text-base-ink bg-clay-base/60 py-1.5 px-2 rounded-md truncate">
+              Token: {registration.qrToken}
             </div>
           </div>
 

@@ -77,37 +77,37 @@ function MyTasks() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
+          <Link to="/volunteer/scanner">
+            <ClayButton className="bg-teal-live text-base-ink text-sm font-bold py-3 px-5 shadow-clay shadow-clay-dual hover:brightness-110">
+              📷 Open Scanner
+            </ClayButton>
+          </Link>
+
           <Link to="/volunteer/report-issue">
-            <ClayButton className="bg-coral-alert text-white text-xs font-semibold shadow-clay">
+            <ClayButton className="bg-coral-alert text-white text-xs font-bold shadow-clay">
               🚨 Report Issue
             </ClayButton>
           </Link>
 
           <Link to="/volunteer/trust-card">
-            <ClayButton className="bg-amber-ai text-base-ink text-xs font-semibold">
+            <ClayButton className="bg-amber-ai text-base-ink text-xs font-bold">
               AI Trust Card
             </ClayButton>
           </Link>
 
           <Link to="/volunteer/onboarding">
-            <ClayButton className="bg-glass-white/20 text-glass-white text-xs">
+            <ClayButton className="bg-glass-white/20 text-glass-white text-xs font-semibold">
               ⚙️ My Profile
-            </ClayButton>
-          </Link>
-
-          <Link to="/volunteer/scanner">
-            <ClayButton className="bg-teal-live text-base-ink text-xs font-semibold">
-              📷 Scanner
             </ClayButton>
           </Link>
         </div>
       </div>
 
       {!hasProfile && (
-        <div className="mb-6 rounded-clay bg-amber-ai/20 p-4 text-glass-white border border-amber-ai/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="mb-6 rounded-[18px] bg-amber-ai/20 p-4 text-glass-white border border-amber-ai/40 shadow-glass flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <div className="font-semibold text-amber-ai text-sm">Onboarding Profile Missing</div>
-            <div className="text-xs text-glass-white/80">
+            <div className="font-semibold text-amber-ai text-sm font-display">Onboarding Profile Missing</div>
+            <div className="text-xs text-glass-white/80 font-body">
               Complete your skills and availability profile so organizers can assign relevant tasks.
             </div>
           </div>
@@ -120,12 +120,12 @@ function MyTasks() {
       )}
 
       {error && (
-        <div className="mb-6 rounded-clay bg-coral-alert/20 p-3 text-sm text-coral-alert border border-coral-alert/30">
+        <div className="mb-6 rounded-[18px] bg-coral-alert/20 p-3 text-sm text-coral-alert border border-coral-alert/30">
           {error}
         </div>
       )}
 
-      {/* Notification Feed Glass Panel (Section 5.9) */}
+      {/* Notification Feed Glass Panel (Section 5.9 / 6) */}
       <NotificationFeed />
 
       {/* Task List */}
@@ -134,7 +134,7 @@ function MyTasks() {
           <GlassPanel className="p-8 text-center">
             <div className="text-4xl mb-2">📋</div>
             <h3 className="font-display text-lg font-bold text-glass-white">No Assigned Tasks Yet</h3>
-            <p className="mt-1 text-sm text-glass-white/70">
+            <p className="mt-1 text-sm text-glass-white/70 font-body">
               When an event organizer assigns a task to you, it will appear here.
             </p>
           </GlassPanel>
@@ -145,28 +145,32 @@ function MyTasks() {
 
             if (!task) return null;
 
+            const isCompleted = assignment.status === 'completed';
+
             return (
               <div
                 key={assignment._id}
-                className="rounded-clay bg-clay-base p-5 text-base-ink shadow-clay transition-all duration-150"
+                className="rounded-[18px] bg-clay-base p-5 text-base-ink shadow-clay shadow-clay-dual border border-white/30 transition-all duration-150"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div>
                     {event && (
-                      <span className="inline-block rounded-full bg-base-ink/10 px-2.5 py-0.5 text-[11px] font-semibold text-base-ink mb-1">
+                      <span className="inline-block rounded-full bg-base-ink/10 px-3 py-0.5 text-[11px] font-bold text-base-ink mb-1 border border-base-ink/15">
                         {event.title}
                       </span>
                     )}
-                    <h2 className="font-display text-lg font-bold">{task.title}</h2>
+                    <h2 className={`font-display text-lg font-bold ${isCompleted ? 'line-through opacity-75' : ''}`}>
+                      {task.title}
+                    </h2>
                     {task.description && (
-                      <p className="mt-1 text-xs text-base-ink/80">{task.description}</p>
+                      <p className="mt-1 text-xs text-base-ink/80 leading-relaxed font-body">{task.description}</p>
                     )}
                   </div>
 
                   <div className="flex items-center gap-2">
                     <span
                       className={`rounded-clay px-3 py-1 text-xs font-bold shadow-clay ${
-                        assignment.status === 'completed'
+                        isCompleted
                           ? 'bg-teal-live text-base-ink'
                           : assignment.status === 'in_progress'
                           ? 'bg-amber-ai text-base-ink'
@@ -178,26 +182,26 @@ function MyTasks() {
                   </div>
                 </div>
 
-                <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-base-ink/80 border-t border-base-ink/10 pt-3">
+                <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-base-ink/80 border-t border-base-ink/10 pt-3 font-body">
                   {task.location && (
                     <div className="flex items-center gap-1 font-medium">
                       <span>📍 Location:</span>
-                      <span>{task.location}</span>
+                      <span className="font-semibold font-mono">{task.location}</span>
                     </div>
                   )}
 
                   <div className="flex items-center gap-1 font-medium">
                     <span>🕒 Shift:</span>
-                    <span>
+                    <span className="font-mono font-semibold">
                       {new Date(task.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -{' '}
                       {new Date(task.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </div>
 
-                {/* Status Toggle Actions */}
+                {/* Status Toggle Actions (Checkbox-style press effect) */}
                 <div className="mt-4 flex items-center justify-between border-t border-base-ink/10 pt-3">
-                  <div className="text-xs font-semibold text-base-ink/70">Update Status:</div>
+                  <div className="text-xs font-bold text-base-ink/70 font-body">Update Status:</div>
                   <div className="flex gap-2">
                     {assignment.status !== 'completed' && (
                       <ClayButton
@@ -209,9 +213,9 @@ function MyTasks() {
                             assignment.status === 'assigned' ? 'in_progress' : 'completed'
                           )
                         }
-                        className="bg-teal-live py-1 px-3 text-xs font-semibold text-base-ink"
+                        className="bg-teal-live py-1.5 px-4 text-xs font-bold text-base-ink shadow-clay shadow-clay-dual active:translate-y-0.5 active:shadow-clay-pressed"
                       >
-                        {assignment.status === 'assigned' ? 'Start Shift' : 'Mark Completed ✓'}
+                        {assignment.status === 'assigned' ? 'Start Shift →' : 'Mark Completed ✓'}
                       </ClayButton>
                     )}
 
@@ -219,7 +223,7 @@ function MyTasks() {
                       <ClayButton
                         disabled={updatingId === assignment._id}
                         onClick={() => handleStatusToggle(assignment._id, assignment.status, 'assigned')}
-                        className="bg-base-ink/10 py-1 px-3 text-xs text-base-ink"
+                        className="bg-base-ink/10 py-1.5 px-3 text-xs font-medium text-base-ink border border-base-ink/20 active:translate-y-0.5"
                       >
                         Re-open Task
                       </ClayButton>

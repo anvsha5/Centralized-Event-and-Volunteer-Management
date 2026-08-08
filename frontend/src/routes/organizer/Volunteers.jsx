@@ -242,38 +242,42 @@ function Volunteers() {
       {/* Kanban Board Columns */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Column 1: Unassigned Tasks */}
-        <GlassPanel className="p-4">
+        <GlassPanel className="p-4 bg-glass-white/[0.06] backdrop-blur-glass border border-glass-white/10">
           <div className="mb-4 flex items-center justify-between border-b border-glass-white/10 pb-2">
-            <h2 className="font-display font-semibold text-glass-white">
-              Unassigned <span className="text-xs text-glass-white/50">({unassignedTasks.length})</span>
+            <h2 className="font-display font-bold text-glass-white flex items-center gap-2">
+              Unassigned <span className="text-xs font-mono text-glass-white/60">({unassignedTasks.length})</span>
             </h2>
-            <span className="rounded-full bg-amber-ai/20 px-2 py-0.5 text-xs text-amber-ai">
+            <span className="rounded-full bg-amber-ai/20 px-2.5 py-0.5 text-xs font-bold text-amber-ai border border-amber-ai/30">
               Needs Assignment
             </span>
           </div>
 
           <div className="space-y-4">
             {unassignedTasks.length === 0 ? (
-              <div className="py-8 text-center text-xs text-glass-white/50">No unassigned tasks</div>
+              <div className="py-8 text-center text-xs text-glass-white/50 italic">No unassigned tasks</div>
             ) : (
               unassignedTasks.map((task) => (
-                <div key={task._id} className="rounded-clay bg-clay-base p-4 text-base-ink shadow-clay">
-                  <h3 className="font-display font-bold text-sm">{task.title}</h3>
-                  {task.description && <p className="mt-1 text-xs text-base-ink/80">{task.description}</p>}
+                <div key={task._id} className="group relative rounded-[18px] bg-clay-base p-4 text-base-ink shadow-clay shadow-clay-dual border border-white/30 cursor-grab hover:-translate-y-0.5 active:cursor-grabbing transition-all">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-display font-bold text-base">{task.title}</h3>
+                    <span title="Draggable card" className="text-xs opacity-40 group-hover:opacity-100 transition-opacity">::</span>
+                  </div>
+
+                  {task.description && <p className="mt-1 text-xs text-base-ink/80 leading-relaxed font-body">{task.description}</p>}
                   
-                  <div className="mt-2 text-[11px] text-base-ink/70 space-y-0.5">
-                    {task.location && <div>📍 {task.location}</div>}
-                    <div>
-                      🕒 {new Date(task.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(task.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  <div className="mt-2.5 text-[11px] text-base-ink/80 space-y-1 font-body">
+                    {task.location && <div className="flex items-center gap-1 font-medium">📍 <span className="font-mono">{task.location}</span></div>}
+                    <div className="flex items-center gap-1 font-medium">
+                      🕒 <span className="font-mono">{new Date(task.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(task.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                     </div>
                   </div>
 
                   {task.requiredSkills && task.requiredSkills.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1">
+                    <div className="mt-3 flex flex-wrap gap-1.5 border-t border-base-ink/10 pt-2">
                       {task.requiredSkills.map((sk) => (
-                        <span key={sk} className="rounded-full bg-base-ink/10 px-2 py-0.5 text-[10px] font-medium">
+                        <ClayChip key={sk} className="text-[10px] !py-0.5 !px-2">
                           {sk}
-                        </span>
+                        </ClayChip>
                       ))}
                     </div>
                   )}
@@ -281,7 +285,7 @@ function Volunteers() {
                   <div className="mt-3 border-t border-base-ink/10 pt-2">
                     <ClayButton
                       onClick={() => handleOpenSuggestions(task._id)}
-                      className="w-full bg-teal-live py-1 text-xs font-semibold text-base-ink"
+                      className="w-full bg-teal-live py-1.5 text-xs font-bold text-base-ink hover:brightness-110"
                     >
                       ⚡ Suggest Volunteers
                     </ClayButton>

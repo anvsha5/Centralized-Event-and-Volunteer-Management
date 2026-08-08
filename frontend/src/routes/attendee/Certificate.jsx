@@ -80,20 +80,22 @@ function Certificate() {
   if (blockedReason) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
-        <GlassPanel className="space-y-4 p-6 text-center">
-          <ClayChip variant="amber" className="uppercase tracking-[0.2em]">
-            Locked
-          </ClayChip>
-          <h1 className="text-2xl font-bold text-glass-white">Certificate locked</h1>
-          <p className="text-sm text-glass-white/70">{lockedMessage}</p>
-          <div className="flex flex-wrap justify-center gap-3">
+        <GlassPanel className="space-y-5 p-8 text-center border border-amber-ai/40 bg-amber-ai/10 shadow-[0_0_20px_rgba(245,169,63,0.15)]">
+          <div className="flex justify-center">
+            <ClayChip className="bg-amber-ai text-base-ink font-bold uppercase tracking-[0.2em] px-3 py-1">
+              Certificate Locked
+            </ClayChip>
+          </div>
+          <h1 className="font-display text-2xl font-bold text-glass-white">Certificate Access Restricted</h1>
+          <p className="text-base font-body text-glass-white/90 leading-relaxed font-medium">{lockedMessage}</p>
+          <div className="flex flex-wrap justify-center gap-3 pt-2">
             {blockedReason === 'feedback_required' && (
               <Link to={`/attendee/feedback/${id}`}>
-                <ClayButton variant="primary">Leave feedback</ClayButton>
+                <ClayButton className="bg-teal-live text-base-ink font-bold px-6 py-2.5">Leave feedback →</ClayButton>
               </Link>
             )}
             <Link to={`/attendee/ticket/${id}`}>
-              <ClayButton variant={blockedReason === 'feedback_required' ? 'secondary' : 'primary'}>
+              <ClayButton className={blockedReason === 'feedback_required' ? 'bg-glass-white/20 text-glass-white' : 'bg-teal-live text-base-ink font-bold px-6 py-2.5'}>
                 Back to ticket
               </ClayButton>
             </Link>

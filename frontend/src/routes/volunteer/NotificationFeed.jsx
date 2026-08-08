@@ -145,30 +145,30 @@ function NotificationFeed() {
             <div
               key={notif._id}
               onClick={(e) => !notif.read && handleMarkAsRead(notif._id, e)}
-              className={`group flex items-start justify-between gap-3 rounded-lg border p-3 text-xs transition-all cursor-pointer ${
+              className={`group flex items-center justify-between gap-3 rounded-glass border px-3.5 py-2.5 text-xs transition-all cursor-pointer ${
                 !notif.read
-                  ? 'border-teal-live/40 bg-teal-live/10 text-glass-white hover:bg-teal-live/20'
+                  ? 'border-teal-live/40 bg-teal-live/15 text-glass-white hover:bg-teal-live/20 shadow-[0_0_10px_rgba(47,208,196,0.1)]'
                   : 'border-glass-white/10 bg-glass-white/5 text-glass-white/70 hover:bg-glass-white/10'
               }`}
             >
-              <div className="flex items-start gap-2.5">
+              <div className="flex items-center gap-2.5 min-w-0 flex-1">
                 {/* Type Icon */}
-                <span className="text-base select-none">{getNotificationIcon(notif.type)}</span>
+                <span className="text-sm select-none shrink-0">{getNotificationIcon(notif.type)}</span>
 
-                <div>
-                  <div className="font-medium text-glass-white">{notif.message}</div>
-                  <div className="mt-1 font-mono text-[10px] text-glass-white/50">
+                <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                  <div className="font-medium text-glass-white truncate text-xs">{notif.message}</div>
+                  <div className="font-mono text-[10px] text-glass-white/50 shrink-0">
                     {formatRelativeTime(notif.createdAt)}
                   </div>
                 </div>
               </div>
 
-              {/* Unread Teal Dot or Mark Read Button */}
+              {/* Unread Teal Dot */}
               <div className="flex items-center gap-2 shrink-0">
                 {!notif.read && (
                   <span
                     title="Unread notification - Click to mark read"
-                    className="h-2.5 w-2.5 rounded-full bg-teal-live shadow-[0_0_8px_#2FD0C4]"
+                    className="h-2 w-2 rounded-full bg-teal-live shadow-[0_0_8px_#2FD0C4] animate-pulse"
                   />
                 )}
               </div>

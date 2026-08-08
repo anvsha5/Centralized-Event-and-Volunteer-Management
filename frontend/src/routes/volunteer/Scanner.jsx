@@ -95,40 +95,34 @@ function Scanner() {
   };
 
   return (
-    <div className="relative min-h-screen bg-slate-900 px-4 py-6 text-white">
+    <div className="relative min-h-[calc(100vh-4rem)] p-4 text-glass-white pb-24">
       {/* Top Header */}
       <div className="mx-auto max-w-md flex items-center justify-between mb-4">
         <div>
-          <h1 className="font-heading text-xl font-bold">QR Scanner</h1>
-          <p className="text-xs text-white/60">Scan attendee QR code for check-in / check-out</p>
+          <h1 className="font-display text-2xl font-bold tracking-tight text-glass-white">QR Scanner</h1>
+          <p className="text-xs text-glass-white/60 font-body">Scan attendee QR code for check-in / check-out</p>
         </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2">
-          <Link to="/volunteer/report-issue">
-            <ClayButton className="!px-3 !py-1.5 text-xs bg-coral-alert text-white font-bold shadow-clay hover:brightness-110">
-              🚨 Report Issue
-            </ClayButton>
-          </Link>
-
-          <ClayButton
-            onClick={() => setManualModalOpen(true)}
-            className="!px-3 !py-1.5 text-xs bg-white/10 text-white hover:bg-white/20 border border-white/20"
-          >
-            🔍 Search
-          </ClayButton>
-        </div>
+        {/* Manual search icon tap */}
+        <button
+          type="button"
+          onClick={() => setManualModalOpen(true)}
+          className="rounded-glass border border-glass-white/20 bg-glass-white/10 p-2 text-sm text-glass-white hover:bg-glass-white/20 backdrop-blur-md shadow-sm transition-all"
+          title="Manual Search Override"
+        >
+          🔍 Search
+        </button>
       </div>
 
       {/* Mode Switcher */}
-      <div className="mx-auto max-w-md mb-4 flex gap-2">
+      <div className="mx-auto max-w-md mb-4 flex gap-2.5">
         <ClayChip
           selected={scanType === 'checkin'}
           onClick={() => {
             setScanType('checkin');
             setScanResult(null);
           }}
-          className="flex-1 text-center justify-center cursor-pointer"
+          className="flex-1 text-center justify-center cursor-pointer py-2 text-xs font-bold"
         >
           Check-in Mode
         </ClayChip>
@@ -138,14 +132,17 @@ function Scanner() {
             setScanType('checkout');
             setScanResult(null);
           }}
-          className="flex-1 text-center justify-center cursor-pointer"
+          className="flex-1 text-center justify-center cursor-pointer py-2 text-xs font-bold"
         >
           Check-out Mode
         </ClayChip>
       </div>
 
       {/* Scanner Viewfinder Box */}
-      <div className="mx-auto max-w-md relative overflow-hidden rounded-glass border border-white/20 bg-black/40 p-4 backdrop-blur-glass">
+      <div className="mx-auto max-w-md relative overflow-hidden rounded-glass border border-glass-white/25 bg-base-ink/60 p-4 backdrop-blur-glass shadow-glass">
+        {/* Animated Scan Line Overlay */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-teal-live to-transparent shadow-[0_0_15px_#2FD0C4] animate-[bounce_2s_infinite]" />
+        
         <div id="qr-reader" className="w-full overflow-hidden rounded-lg" />
       </div>
 
@@ -153,32 +150,41 @@ function Scanner() {
       {scanResult && (
         <div className="mx-auto max-w-md mt-4">
           <GlassPanel
-            className={`border-2 ${
+            className={`border-2 p-5 ${
               scanResult.success
-                ? 'border-teal-live bg-teal-live/20 text-teal-100'
-                : 'border-rose-500 bg-rose-500/20 text-rose-100'
+                ? 'border-teal-live bg-teal-live/25 text-teal-100 shadow-[0_0_30px_rgba(47,208,196,0.3)]'
+                : 'border-coral-alert bg-coral-alert/25 text-coral-100 shadow-[0_0_30px_rgba(255,107,107,0.3)]'
             }`}
           >
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider opacity-80">
-                  {scanResult.success ? '✓ Scan Successful' : '✕ Scan Error'}
+                <span className="text-xs font-bold uppercase tracking-wider opacity-90 font-mono">
+                  {scanResult.success ? '✓ Scan Successful' : '✕ Check-in Failure'}
                 </span>
                 {scanResult.name && (
-                  <h3 className="font-heading text-lg font-bold mt-1">{scanResult.name}</h3>
+                  <h3 className="font-display text-2xl font-bold mt-1 text-white">{scanResult.name}</h3>
                 )}
-                <p className="text-sm mt-0.5 opacity-90">{scanResult.message}</p>
+                <p className="text-sm mt-1 opacity-95 font-body leading-relaxed">{scanResult.message}</p>
               </div>
               <button
                 onClick={() => setScanResult(null)}
-                className="text-xs opacity-60 hover:opacity-100 p-1"
+                className="text-xs font-bold opacity-80 hover:opacity-100 p-1"
               >
-                Dismiss
+                ✕ Dismiss
               </button>
             </div>
           </GlassPanel>
         </div>
       )}
+
+      {/* Pinned "Report an Issue" Clay Button at Bottom (Section 6 spec) */}
+      <div className="fixed bottom-6 left-0 right-0 z-40 flex justify-center px-4">
+        <Link to="/volunteer/report-issue">
+          <ClayButton className="bg-coral-alert text-white font-bold py-3 px-6 shadow-clay shadow-clay-dual hover:brightness-110 flex items-center gap-2">
+            <span>🚨</span> Report an Issue
+          </ClayButton>
+        </Link>
+      </div>
 
       {/* Manual Search Modal */}
       {manualModalOpen && (

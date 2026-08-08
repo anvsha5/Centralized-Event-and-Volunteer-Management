@@ -13,26 +13,26 @@ const BACKEND_HOST = import.meta.env.VITE_API_URL
 function getTeamBadgeStyle(teamTag) {
   switch (teamTag) {
     case 'technical':
-      return 'bg-teal-live text-base-ink';
+      return 'bg-teal-live text-base-ink font-bold shadow-sm';
     case 'hospitality':
-      return 'bg-[#C9A0F5] text-base-ink';
+      return 'bg-violet-hospitality text-base-ink font-bold shadow-sm';
     case 'stage':
-      return 'bg-[#F5C86B] text-base-ink';
+      return 'bg-gold-stage text-base-ink font-bold shadow-sm';
     case 'general':
     default:
-      return 'bg-clay-base text-base-ink';
+      return 'bg-clay-base text-base-ink font-bold border border-base-ink/20 shadow-sm';
   }
 }
 
 function getPriorityStripeStyle(priority) {
   switch (priority) {
     case 'high':
-      return 'border-l-4 border-l-coral-alert';
+      return 'border-l-[8px] border-l-coral-alert shadow-[0_0_12px_rgba(255,107,107,0.2)]';
     case 'medium':
-      return 'border-l-4 border-l-amber-ai';
+      return 'border-l-[5px] border-l-amber-ai';
     case 'low':
     default:
-      return 'border-l-4 border-l-teal-live';
+      return 'border-l-2 border-l-teal-live';
   }
 }
 
@@ -256,19 +256,17 @@ function Issues() {
                   colIssues.map((issue) => (
                     <div
                       key={issue._id}
-                      className={`relative rounded-clay bg-clay-base p-4 text-base-ink shadow-clay transition-all duration-150 ${getPriorityStripeStyle(
+                      className={`relative rounded-[18px] bg-clay-base p-4 text-base-ink shadow-clay shadow-clay-dual transition-all duration-150 border border-white/30 ${getPriorityStripeStyle(
                         issue.priority
                       )}`}
                     >
                       {/* Card Header: Team Tag Chip & Photo Thumbnail */}
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <span
-                          className={`rounded-clay px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${getTeamBadgeStyle(
-                            issue.teamTag
-                          )}`}
+                        <ClayChip
+                          className={getTeamBadgeStyle(issue.teamTag)}
                         >
                           {issue.teamTag || 'general'}
-                        </span>
+                        </ClayChip>
 
                         {issue.photoUrl && (
                           <button
@@ -280,7 +278,7 @@ function Issues() {
                                   : `${BACKEND_HOST}${issue.photoUrl}`
                               )
                             }
-                            className="group relative h-14 w-14 overflow-hidden rounded-xl border border-base-ink/20 shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-live"
+                            className="group relative h-14 w-14 shrink-0 overflow-hidden rounded-clay border-2 border-white/50 bg-clay-base shadow-clay shadow-clay-dual focus:outline-none focus:ring-2 focus:ring-teal-live"
                           >
                             <img
                               src={
@@ -292,7 +290,7 @@ function Issues() {
                               className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 flex items-center justify-center bg-base-ink/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <span className="text-xs text-white">🔍</span>
+                              <span className="text-xs text-white font-bold">🔍</span>
                             </div>
                           </button>
                         )}

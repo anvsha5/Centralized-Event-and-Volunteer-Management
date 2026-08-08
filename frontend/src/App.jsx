@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './routes/auth/Login';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,87 +27,177 @@ import ResourceInventory from './routes/organizer/ResourceInventory';
 
 function AppNavbar() {
   const { token, role, user, logout } = useAuth();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
 
   return (
-    <nav className="flex items-center justify-between border-b border-glass-white/10 px-6 py-4 text-sm backdrop-blur-md">
-      <div className="flex gap-4">
-        {!token ? (
-          <>
-            <Link to="/events" className="text-teal-live hover:underline">
-              Events Directory
-            </Link>
-            <Link to="/login" className="text-glass-white/70 hover:text-glass-white">
-              Login
-            </Link>
-          </>
-        ) : (
-          <>
-            {role === 'organizer' && (
-              <>
-                <Link to="/organizer" className="text-teal-live hover:underline">
-                  Events
-                </Link>
-                <Link to="/organizer/volunteers" className="text-teal-live hover:underline">
-                  Volunteers & Tasks
-                </Link>
-                <Link to="/organizer/live" className="text-teal-live hover:underline">
-                  Live Dashboard
-                </Link>
-                <Link to="/organizer/issues" className="text-teal-live hover:underline">
-                  Issue Triage
-                </Link>
-                <Link to="/organizer/timeline" className="text-teal-live hover:underline">
-                  Timeline
-                </Link>
-                <Link to="/organizer/analytics" className="text-teal-live hover:underline">
-                  Analytics
-                </Link>
-              </>
-            )}
-            {role === 'volunteer' && (
-              <>
-                <Link to="/volunteer/tasks" className="text-teal-live hover:underline">
-                  My Tasks
-                </Link>
-                <Link to="/volunteer/report-issue" className="text-teal-live hover:underline">
-                  Report Issue
-                </Link>
-                <Link to="/volunteer/scanner" className="text-teal-live hover:underline">
-                  Scanner
-                </Link>
-                <Link to="/volunteer/timeline" className="text-teal-live hover:underline">
-                  Timeline
-                </Link>
-                <Link to="/volunteer/onboarding" className="text-teal-live hover:underline">
-                  Onboarding & Profile
-                </Link>
-                <Link to="/volunteer/trust-card" className="text-teal-live hover:underline">
-                  My Trust Card
-                </Link>
-              </>
-            )}
-            {role === 'attendee' && (
-              <>
-                <Link to="/attendee" className="text-teal-live hover:underline">
-                  Attendee Home
-                </Link>
-                <Link to="/attendee/timeline" className="text-teal-live hover:underline">
-                  Schedule
-                </Link>
-              </>
-            )}
-          </>
-        )}
+    <nav className="sticky top-0 z-40 flex items-center justify-between border-b border-glass-white/10 bg-glass-white/[0.08] px-6 py-3.5 text-sm backdrop-blur-glass shadow-glass">
+      <div className="flex flex-wrap items-center gap-6">
+        <Link to="/" className="font-display text-base font-extrabold tracking-tight text-glass-white flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-teal-live shadow-[0_0_8px_#2FD0C4]" />
+          EventPortal
+        </Link>
+
+        <div className="flex items-center gap-4">
+          {!token ? (
+            <>
+              <Link
+                to="/events"
+                className={`text-xs font-semibold transition-colors ${
+                  isActive('/events') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                }`}
+              >
+                Events Directory
+              </Link>
+              <Link
+                to="/login"
+                className={`text-xs font-semibold transition-colors ${
+                  isActive('/login') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                }`}
+              >
+                Login
+              </Link>
+            </>
+          ) : (
+            <>
+              {role === 'organizer' && (
+                <>
+                  <Link
+                    to="/organizer"
+                    className={`text-xs font-semibold transition-colors ${
+                      location.pathname === '/organizer' ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Events
+                  </Link>
+                  <Link
+                    to="/organizer/volunteers"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/organizer/volunteers') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Volunteers & Tasks
+                  </Link>
+                  <Link
+                    to="/organizer/live"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/organizer/live') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Live Dashboard
+                  </Link>
+                  <Link
+                    to="/organizer/issues"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/organizer/issues') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Issue Triage
+                  </Link>
+                  <Link
+                    to="/organizer/timeline"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/organizer/timeline') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Timeline
+                  </Link>
+                  <Link
+                    to="/organizer/analytics"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/organizer/analytics') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Analytics
+                  </Link>
+                </>
+              )}
+              {role === 'volunteer' && (
+                <>
+                  <Link
+                    to="/volunteer/tasks"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/tasks') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    My Tasks
+                  </Link>
+                  <Link
+                    to="/volunteer/report-issue"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/report-issue') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Report Issue
+                  </Link>
+                  <Link
+                    to="/volunteer/scanner"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/scanner') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Scanner
+                  </Link>
+                  <Link
+                    to="/volunteer/timeline"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/timeline') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Timeline
+                  </Link>
+                  <Link
+                    to="/volunteer/onboarding"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/onboarding') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    to="/volunteer/trust-card"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/volunteer/trust-card') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    My Trust Card
+                  </Link>
+                </>
+              )}
+              {role === 'attendee' && (
+                <>
+                  <Link
+                    to="/attendee"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/attendee') && !isActive('/attendee/timeline') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Attendee Home
+                  </Link>
+                  <Link
+                    to="/attendee/timeline"
+                    className={`text-xs font-semibold transition-colors ${
+                      isActive('/attendee/timeline') ? 'text-teal-live border-b-2 border-teal-live pb-0.5' : 'text-glass-white/70 hover:text-glass-white'
+                    }`}
+                  >
+                    Schedule
+                  </Link>
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {token && user && (
-        <div className="flex items-center gap-4 text-xs text-glass-white/80">
+        <div className="flex items-center gap-3 text-xs text-glass-white/80">
           <span>
-            {user.email} <span className="rounded bg-teal-live/20 px-2 py-0.5 font-mono text-teal-live">{user.role}</span>
+            {user.email} <span className="rounded bg-teal-live/20 px-2 py-0.5 font-mono text-teal-live border border-teal-live/30">{user.role}</span>
           </span>
           <button
             onClick={logout}
-            className="rounded bg-coral-alert/20 px-2.5 py-1 text-coral-alert hover:bg-coral-alert/30"
+            className="rounded-clay bg-coral-alert/20 px-2.5 py-1 text-coral-alert border border-coral-alert/30 hover:bg-coral-alert/30 font-medium transition-colors"
           >
             Logout
           </button>
@@ -116,6 +206,7 @@ function AppNavbar() {
     </nav>
   );
 }
+
 
 function RootRedirect() {
   const { token, role, loading } = useAuth();
